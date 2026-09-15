@@ -1,0 +1,117 @@
+{
+  "synthetic_data_warning": "These metrics validate software architecture only and are not real-world accuracy.",
+  "samples": 20000,
+  "accuracy": 0.97745,
+  "macro_f1": 0.93131399462228,
+  "labels": [
+    "HIGH_RISK_MINING_ACTIVITY",
+    "MACHINERY_ACTIVITY",
+    "POSSIBLE_MINING_ACTIVITY",
+    "SAFE",
+    "SUSPICIOUS_ENVIRONMENTAL_CHANGE",
+    "SYSTEM_UNCERTAIN"
+  ],
+  "confusion_matrix": [
+    [
+      749,
+      5,
+      66,
+      0,
+      0,
+      0
+    ],
+    [
+      3,
+      8027,
+      15,
+      20,
+      0,
+      0
+    ],
+    [
+      183,
+      68,
+      569,
+      0,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      3485,
+      10,
+      20
+    ],
+    [
+      0,
+      0,
+      0,
+      13,
+      4464,
+      3
+    ],
+    [
+      0,
+      0,
+      0,
+      43,
+      2,
+      2255
+    ]
+  ],
+  "classification_report": {
+    "HIGH_RISK_MINING_ACTIVITY": {
+      "precision": 0.8010695187165775,
+      "recall": 0.9134146341463415,
+      "f1-score": 0.8535612535612536,
+      "support": 820.0
+    },
+    "MACHINERY_ACTIVITY": {
+      "precision": 0.9909876543209877,
+      "recall": 0.9952882827030378,
+      "f1-score": 0.9931333127126508,
+      "support": 8065.0
+    },
+    "POSSIBLE_MINING_ACTIVITY": {
+      "precision": 0.8753846153846154,
+      "recall": 0.6939024390243902,
+      "f1-score": 0.7741496598639456,
+      "support": 820.0
+    },
+    "SAFE": {
+      "precision": 0.9786576804268464,
+      "recall": 0.9914651493598862,
+      "f1-score": 0.9850197851893725,
+      "support": 3515.0
+    },
+    "SUSPICIOUS_ENVIRONMENTAL_CHANGE": {
+      "precision": 0.9973190348525469,
+      "recall": 0.9964285714285714,
+      "f1-score": 0.9968736042876284,
+      "support": 4480.0
+    },
+    "SYSTEM_UNCERTAIN": {
+      "precision": 0.9899034240561896,
+      "recall": 0.9804347826086957,
+      "f1-score": 0.9851463521188292,
+      "support": 2300.0
+    },
+    "accuracy": 0.97745,
+    "macro avg": {
+      "precision": 0.9388869879596272,
+      "recall": 0.9284889765451538,
+      "f1-score": 0.93131399462228,
+      "support": 20000.0
+    },
+    "weighted avg": {
+      "precision": 0.9775878360115379,
+      "recall": 0.97745,
+      "f1-score": 0.9769259009029357,
+      "support": 20000.0
+    }
+  },
+  "high_risk_false_positive_rate": 0.009697601668404589,
+  "high_risk_false_negative_rate": 0.08658536585365853
+}

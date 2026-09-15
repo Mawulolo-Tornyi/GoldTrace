@@ -1,0 +1,10 @@
+-r requirements.txt
+torch
+torchaudio
+onnx
+librosa
+matplotlib
+tqdm
+psutil
+pytest
+pytest-asyncio

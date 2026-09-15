@@ -1,0 +1,21 @@
+nodes:
+  - node_id: NODE_A
+    name: River Monitoring Node A
+    latitude: 5.6037
+    longitude: -0.1870
+    river_id: RIVER_001
+    river_name: Example River
+    position_order: 1
+    position_type: UPSTREAM
+    district: Example District
+    region: Example Region
+  - node_id: NODE_B
+    name: River Monitoring Node B
+    latitude: 5.6081
+    longitude: -0.1814
+    river_id: RIVER_001
+    river_name: Example River
+    position_order: 2
+    position_type: DOWNSTREAM
+    district: Example District
+    region: Example Region

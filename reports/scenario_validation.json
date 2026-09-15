@@ -1,0 +1,82 @@
+{
+  "synthetic_demo_warning": "Scenario tests use synthetic/mock sensor data.",
+  "scenarios": [
+    {
+      "scenario": "normal",
+      "prediction": "SAFE",
+      "risk_level": "LOW",
+      "confidence": 0.7347038848956604,
+      "suspected_zone": "NO_SUSPECTED_ZONE",
+      "location_present": false,
+      "map_present": false,
+      "agency_eligible": false,
+      "agency_dispatch_status": "NOT_ELIGIBLE"
+    },
+    {
+      "scenario": "heavy_rain",
+      "prediction": "SUSPICIOUS_ENVIRONMENTAL_CHANGE",
+      "risk_level": "MEDIUM",
+      "confidence": 0.7490197444952404,
+      "suspected_zone": "UPSTREAM_OF_NODE_A_OR_WIDESPREAD_EVENT",
+      "location_present": true,
+      "map_present": true,
+      "agency_eligible": false,
+      "agency_dispatch_status": "NOT_ELIGIBLE"
+    },
+    {
+      "scenario": "vehicle",
+      "prediction": "MACHINERY_ACTIVITY",
+      "risk_level": "MEDIUM",
+      "confidence": 0.7757344404859731,
+      "suspected_zone": "BETWEEN_NODE_A_AND_NODE_B",
+      "location_present": true,
+      "map_present": true,
+      "agency_eligible": false,
+      "agency_dispatch_status": "NOT_ELIGIBLE"
+    },
+    {
+      "scenario": "water_pump",
+      "prediction": "MACHINERY_ACTIVITY",
+      "risk_level": "MEDIUM",
+      "confidence": 0.8375831022712603,
+      "suspected_zone": "BETWEEN_NODE_A_AND_NODE_B",
+      "location_present": true,
+      "map_present": true,
+      "agency_eligible": false,
+      "agency_dispatch_status": "NOT_ELIGIBLE"
+    },
+    {
+      "scenario": "high_risk_mining",
+      "prediction": "HIGH_RISK_MINING_ACTIVITY",
+      "risk_level": "CRITICAL",
+      "confidence": 0.9254032770220539,
+      "suspected_zone": "BETWEEN_NODE_A_AND_NODE_B",
+      "location_present": true,
+      "map_present": true,
+      "agency_eligible": true,
+      "agency_dispatch_status": "SIMULATED"
+    },
+    {
+      "scenario": "sensor_failure",
+      "prediction": "SYSTEM_UNCERTAIN",
+      "risk_level": "UNKNOWN",
+      "confidence": 0.2,
+      "suspected_zone": "NO_SUSPECTED_ZONE",
+      "location_present": false,
+      "map_present": false,
+      "agency_eligible": false,
+      "agency_dispatch_status": "NOT_ELIGIBLE"
+    },
+    {
+      "scenario": "mixed_rain_and_machinery",
+      "prediction": "MACHINERY_ACTIVITY",
+      "risk_level": "MEDIUM",
+      "confidence": 0.82924858486289,
+      "suspected_zone": "UPSTREAM_OF_NODE_A_OR_WIDESPREAD_EVENT",
+      "location_present": true,
+      "map_present": true,
+      "agency_eligible": false,
+      "agency_dispatch_status": "NOT_ELIGIBLE"
+    }
+  ]
+}

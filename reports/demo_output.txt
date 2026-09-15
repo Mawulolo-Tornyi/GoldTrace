@@ -1,0 +1,45 @@
+
+SCENARIO: HIGH_RISK_MINING
+=============================================================
+                         GOLDTRACE
+=============================================================
+
+NODE_A
+Environment : NORMAL_RIVER
+Audio       : NORMAL_ENVIRONMENT
+Vibration   : UNKNOWN_VIBRATION
+Turbidity   : 18.60943415950886 NTU
+Health      : HEALTHY
+
+NODE_B
+Environment : RAINFALL_RUNOFF
+Audio       : GENERATOR
+Vibration   : CONSTRUCTION_ACTIVITY
+Turbidity   : 92.52946594702787 NTU
+Health      : HEALTHY
+
+-------------------------------------------------------------
+DETECTION: Suspected galamsey/mining activity requiring investigation
+TURBIDITY CHANGE: +73.9 NTU
+ML CLASSIFICATION: HIGH_RISK_MINING_ACTIVITY
+RISK LEVEL: CRITICAL
+CONFIDENCE: 93%
+SUSPECTED ZONE: BETWEEN_NODE_A_AND_NODE_B
+RIVER SEGMENT: SEGMENT_A_B
+APPROXIMATE CENTER: 5.6057500000000005, -0.184425
+WHY:
+- Strong downstream turbidity increase
+- Machine-like acoustic signature
+- Heavy machinery vibration
+- Abnormal conditions persisted
+- Multiple sensors agree
+-------------------------------------------------------------
+SECURITY ALERT:
+Eligibility: YES
+Dispatch: SIMULATED
+Authorized Recipients: 3
+Alert Location Included: YES
+Map Data Created: YES
+-------------------------------------------------------------
+RECOMMENDATION: Security/environmental authorities should investigate the monitored river section between Node A and Node B.
+=============================================================

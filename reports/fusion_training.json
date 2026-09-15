@@ -1,0 +1,53 @@
+{
+  "best_model": "hist_gb",
+  "candidates": {
+    "random_forest": {
+      "macro_f1": 0.9191302584599178,
+      "high_risk_recall": 0.95,
+      "high_risk_false_positive_rate": 0.013888888888888888,
+      "selection_score": 1.05885248068214
+    },
+    "extra_trees": {
+      "macro_f1": 0.8968822924895195,
+      "high_risk_recall": 0.95,
+      "high_risk_false_positive_rate": 0.019444444444444445,
+      "selection_score": 1.0354934036006307
+    },
+    "hist_gb": {
+      "macro_f1": 0.9250764841263286,
+      "high_risk_recall": 0.925,
+      "high_risk_false_positive_rate": 0.011111111111111112,
+      "selection_score": 1.0616042619041064
+    },
+    "gradient_boosting": {
+      "macro_f1": 0.9040913494472232,
+      "high_risk_recall": 0.95,
+      "high_risk_false_positive_rate": 0.016666666666666666,
+      "selection_score": 1.0432580161138898
+    }
+  },
+  "features": [
+    "turbidity_difference",
+    "turbidity_ratio",
+    "turbidity_percent_increase",
+    "temperature_difference",
+    "audio_rms_difference",
+    "vibration_rms_difference",
+    "audio_machine_probability_a",
+    "audio_machine_probability_b",
+    "vibration_machinery_probability_a",
+    "vibration_machinery_probability_b",
+    "audio_machine_probability_difference",
+    "vibration_machinery_probability_difference",
+    "persistence_seconds",
+    "anomaly_score",
+    "battery_voltage_a",
+    "battery_voltage_b",
+    "lora_rssi_a",
+    "lora_rssi_b"
+  ],
+  "dataset_rows": 100000,
+  "candidate_comparison_rows": 2000,
+  "production_training_pool_rows": 5000,
+  "split_by_event_id": true
+}

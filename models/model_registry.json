@@ -1,0 +1,200 @@
+{
+  "generated_at": "2026-09-15T08:02:34.006600Z",
+  "warning": "Synthetic metrics validate software architecture only; they are not real-world field performance.",
+  "models": [
+    {
+      "name": "audio",
+      "version": "v1",
+      "framework": "scikit-learn ExtraTrees + PyTorch CNN candidate",
+      "dataset": "synthetic development data",
+      "synthetic_or_real": "synthetic",
+      "model_path": "models/goldtrace_audio_classical_v1.joblib",
+      "edge_model_path": "models/edge/goldtrace_audio_v1.torchscript.pt",
+      "metrics": {
+        "classical_macro_f1": 0.6471090637757304,
+        "cnn_macro_f1": 0.17375886524822695,
+        "synthetic": true,
+        "classes": [
+          "NORMAL_ENVIRONMENT",
+          "FLOWING_WATER",
+          "RAIN",
+          "HEAVY_RAIN",
+          "WIND",
+          "HUMAN_ACTIVITY",
+          "MOTORBIKE",
+          "VEHICLE",
+          "TRUCK",
+          "BOAT",
+          "GENERATOR",
+          "FARM_MACHINERY",
+          "CONSTRUCTION_MACHINERY",
+          "WATER_PUMP",
+          "EXCAVATOR_LIKE",
+          "MULTIPLE_MACHINES",
+          "UNKNOWN_MACHINE",
+          "UNKNOWN_AUDIO"
+        ]
+      },
+      "file_size_bytes": 1712378,
+      "sha256": "541a1a6bb56356bdca7d3c38383e5ace2373d36f5b0832ca2e880bc7f0d069f0",
+      "edge_file_size_bytes": 132586,
+      "edge_sha256": "8649318cf3266d93688c562a3ac233ed550333015174d42faefa896918d3cffb"
+    },
+    {
+      "name": "vibration",
+      "version": "v1",
+      "framework": "scikit-learn ExtraTrees + PyTorch CNN candidate",
+      "dataset": "synthetic development data",
+      "synthetic_or_real": "synthetic",
+      "model_path": "models/goldtrace_vibration_classical_v1.joblib",
+      "edge_model_path": "models/edge/goldtrace_vibration_v1.torchscript.pt",
+      "metrics": {
+        "classical_macro_f1": 0.6514703047210788,
+        "cnn_macro_f1": 0.3038179887906013,
+        "synthetic": true,
+        "classes": [
+          "NORMAL_GROUND",
+          "FOOTSTEPS",
+          "ANIMAL_MOVEMENT",
+          "MOTORBIKE",
+          "VEHICLE_PASSING",
+          "TRUCK",
+          "CONSTRUCTION_ACTIVITY",
+          "WATER_PUMP_VIBRATION",
+          "HEAVY_MACHINERY",
+          "EXCAVATOR_LIKE_VIBRATION",
+          "CONTINUOUS_ENGINE",
+          "IMPACT_EVENT",
+          "UNKNOWN_VIBRATION"
+        ]
+      },
+      "file_size_bytes": 1565822,
+      "sha256": "d915c0d873963daf80a23115abe0c3fbc18f4db857357ceba63cee773387c77e",
+      "edge_file_size_bytes": 94102,
+      "edge_sha256": "6d5655e8893f619049afd7a1b8d58109c2975be89d3ab3affeb596336bf925b7"
+    },
+    {
+      "name": "environment",
+      "version": "v1",
+      "framework": "scikit-learn",
+      "dataset": "synthetic development data",
+      "synthetic_or_real": "synthetic",
+      "model_path": "models/goldtrace_environment_v1.joblib",
+      "edge_model_path": null,
+      "metrics": {
+        "best_model": "extra_trees",
+        "validation_macro_f1": 0.6145313289674968,
+        "candidates": {
+          "random_forest": 0.5876121836121836,
+          "extra_trees": 0.6145313289674968,
+          "hist_gb": 0.6032438666429271,
+          "gradient_boosting": 0.6062599099184465
+        },
+        "features": [
+          "turbidity_a",
+          "turbidity_b",
+          "turbidity_difference",
+          "turbidity_ratio",
+          "turbidity_percent_increase",
+          "temp_a",
+          "temp_b",
+          "temperature_difference",
+          "persistence_seconds"
+        ],
+        "dataset_rows": 100000,
+        "candidate_comparison_rows": 2000,
+        "production_training_pool_rows": 5000,
+        "split_by_event_id": true
+      },
+      "file_size_bytes": 4950792,
+      "sha256": "2cc65aa6110f5f9b82d882482e456f17e396ec4e3118b032c2d01b432114de29"
+    },
+    {
+      "name": "anomaly",
+      "version": "v1",
+      "framework": "scikit-learn IsolationForest",
+      "dataset": "synthetic development data",
+      "synthetic_or_real": "synthetic",
+      "model_path": "models/goldtrace_anomaly_v1.joblib",
+      "edge_model_path": null,
+      "metrics": {
+        "normal_samples": 19141,
+        "features": [
+          "turbidity_difference",
+          "turbidity_ratio",
+          "audio_machine_probability_b",
+          "vibration_machinery_probability_b",
+          "audio_rms_difference",
+          "vibration_rms_difference",
+          "persistence_seconds"
+        ]
+      },
+      "file_size_bytes": 771630,
+      "sha256": "5a0500fb4299b6ac242574129b9305185a70eccfeaa2d738d5b72fbc65c846a2"
+    },
+    {
+      "name": "fusion",
+      "version": "v1",
+      "framework": "scikit-learn",
+      "dataset": "synthetic development data",
+      "synthetic_or_real": "synthetic",
+      "model_path": "models/goldtrace_fusion_v1.joblib",
+      "edge_model_path": null,
+      "metrics": {
+        "best_model": "hist_gb",
+        "candidates": {
+          "random_forest": {
+            "macro_f1": 0.9191302584599178,
+            "high_risk_recall": 0.95,
+            "high_risk_false_positive_rate": 0.013888888888888888,
+            "selection_score": 1.05885248068214
+          },
+          "extra_trees": {
+            "macro_f1": 0.8968822924895195,
+            "high_risk_recall": 0.95,
+            "high_risk_false_positive_rate": 0.019444444444444445,
+            "selection_score": 1.0354934036006307
+          },
+          "hist_gb": {
+            "macro_f1": 0.9250764841263286,
+            "high_risk_recall": 0.925,
+            "high_risk_false_positive_rate": 0.011111111111111112,
+            "selection_score": 1.0616042619041064
+          },
+          "gradient_boosting": {
+            "macro_f1": 0.9040913494472232,
+            "high_risk_recall": 0.95,
+            "high_risk_false_positive_rate": 0.016666666666666666,
+            "selection_score": 1.0432580161138898
+          }
+        },
+        "features": [
+          "turbidity_difference",
+          "turbidity_ratio",
+          "turbidity_percent_increase",
+          "temperature_difference",
+          "audio_rms_difference",
+          "vibration_rms_difference",
+          "audio_machine_probability_a",
+          "audio_machine_probability_b",
+          "vibration_machinery_probability_a",
+          "vibration_machinery_probability_b",
+          "audio_machine_probability_difference",
+          "vibration_machinery_probability_difference",
+          "persistence_seconds",
+          "anomaly_score",
+          "battery_voltage_a",
+          "battery_voltage_b",
+          "lora_rssi_a",
+          "lora_rssi_b"
+        ],
+        "dataset_rows": 100000,
+        "candidate_comparison_rows": 2000,
+        "production_training_pool_rows": 5000,
+        "split_by_event_id": true
+      },
+      "file_size_bytes": 670220,
+      "sha256": "5f894fc0739018eaae0b46ef9d4c4a2a49fa1ba354100791979a20758a613afe"
+    }
+  ]
+}

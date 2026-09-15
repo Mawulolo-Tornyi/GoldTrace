@@ -1,0 +1,20 @@
+{
+  "classical_macro_f1": 0.6514703047210788,
+  "cnn_macro_f1": 0.3038179887906013,
+  "synthetic": true,
+  "classes": [
+    "NORMAL_GROUND",
+    "FOOTSTEPS",
+    "ANIMAL_MOVEMENT",
+    "MOTORBIKE",
+    "VEHICLE_PASSING",
+    "TRUCK",
+    "CONSTRUCTION_ACTIVITY",
+    "WATER_PUMP_VIBRATION",
+    "HEAVY_MACHINERY",
+    "EXCAVATOR_LIKE_VIBRATION",
+    "CONTINUOUS_ENGINE",
+    "IMPACT_EVENT",
+    "UNKNOWN_VIBRATION"
+  ]
+}

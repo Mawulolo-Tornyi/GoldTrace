@@ -1,0 +1,13 @@
+[project]
+name = "goldtrace-ml"
+version = "0.2.0"
+description = "GoldTrace edge ML system for multi-sensor river risk detection, geospatial localization, and controlled agency alerting"
+requires-python = ">=3.10"
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]
+addopts = "-q"
+
+[tool.ruff]
+line-length = 100

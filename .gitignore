@@ -1,0 +1,24 @@
+# Python
+venv/
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+
+# Secrets / local production configuration
+.env
+config/agencies.yaml
+
+# Runtime data
+data/goldtrace.db
+logs/
+*.log
+
+# IDE / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+data/synthetic/*.csv

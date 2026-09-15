@@ -1,0 +1,18 @@
+{
+  "audio": {
+    "status": "partial",
+    "torchscript_path": "/mnt/data/goldtrace_ml_v2/models/edge/goldtrace_audio_v1.torchscript.pt",
+    "torchscript_verified": true,
+    "torchscript_max_abs_difference": 0.0,
+    "onnx_status": "unavailable",
+    "onnx_reason": "No module named 'onnxscript'"
+  },
+  "vibration": {
+    "status": "partial",
+    "torchscript_path": "/mnt/data/goldtrace_ml_v2/models/edge/goldtrace_vibration_v1.torchscript.pt",
+    "torchscript_verified": true,
+    "torchscript_max_abs_difference": 0.0,
+    "onnx_status": "unavailable",
+    "onnx_reason": "No module named 'onnxscript'"
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "generated_at": "2026-09-14T18:58:15.743837Z",
+  "compile": "passed",
+  "pytest": "34 passed",
+  "synthetic_dataset_rows": 100000,
+  "demo_high_risk": "CRITICAL -> BETWEEN_NODE_A_AND_NODE_B -> SIMULATED agency dispatch",
+  "agency_dispatch_default_mode": "DEMO (no real external messages)",
+  "torchscript_edge_exports": "verified",
+  "onnx_export": "source implemented; exporter dependency unavailable in this sandbox, see reports/onnx_export.json",
+  "evaluation_report": "reports/model_evaluation.json",
+  "scenario_report": "reports/scenario_validation.json",
+  "benchmark_report": "reports/edge_benchmark.json",
+  "note": "Synthetic data and current-machine benchmark are development-only. Retrain/validate with real field data and rerun benchmarks on Raspberry Pi 5 before deployment."
+}

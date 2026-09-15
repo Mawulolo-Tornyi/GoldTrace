@@ -1,0 +1,25 @@
+{
+  "classical_macro_f1": 0.6471090637757304,
+  "cnn_macro_f1": 0.17375886524822695,
+  "synthetic": true,
+  "classes": [
+    "NORMAL_ENVIRONMENT",
+    "FLOWING_WATER",
+    "RAIN",
+    "HEAVY_RAIN",
+    "WIND",
+    "HUMAN_ACTIVITY",
+    "MOTORBIKE",
+    "VEHICLE",
+    "TRUCK",
+    "BOAT",
+    "GENERATOR",
+    "FARM_MACHINERY",
+    "CONSTRUCTION_MACHINERY",
+    "WATER_PUMP",
+    "EXCAVATOR_LIKE",
+    "MULTIPLE_MACHINES",
+    "UNKNOWN_MACHINE",
+    "UNKNOWN_AUDIO"
+  ]
+}

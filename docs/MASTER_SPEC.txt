@@ -1,0 +1,3287 @@
+You are a senior machine-learning engineer, deep-learning engineer,
+signal-processing engineer, edge-AI engineer, geospatial/GIS engineer,
+Raspberry Pi engineer, Python backend engineer, telecommunications
+integration engineer, and real-time alerting-system architect.
+
+Your task is to build the COMPLETE machine-learning and intelligent
+monitoring system for:
+
+======================================================================
+GOLDTRACE
+Smart River-Based Illegal Mining Detection, Localization
+and Security Alert System
+======================================================================
+
+TAGLINE:
+
+Detect the activity.
+Trace the source.
+Locate the area.
+Alert the authorities.
+Protect the river.
+
+======================================================================
+0. CORE PURPOSE
+======================================================================
+
+GoldTrace is an intelligent environmental monitoring and early-warning
+system designed to identify sensor patterns associated with possible
+illegal mining activity near rivers.
+
+The complete system must:
+
+1. Collect data from remote ESP32 sensor nodes.
+2. Monitor river turbidity.
+3. Monitor machinery/engine sounds.
+4. Monitor ground vibration.
+5. Monitor water temperature.
+6. Analyze changes between upstream and downstream nodes.
+7. Use machine learning and deep learning.
+8. Detect anomalies.
+9. Fuse multiple sensor signals.
+10. determine environmental/mining risk.
+11. determine WHERE the suspicious activity is likely occurring.
+12. display the suspected area on a map.
+13. create a geospatial incident record.
+14. generate HIGH and CRITICAL alerts.
+15. automatically send qualifying alerts to configured authorized
+    security/environmental agencies.
+16. include the suspected location with every agency alert.
+17. track whether alerts were delivered.
+18. retry failed deliveries.
+19. prevent duplicate/spam alerts.
+20. expose all results through FastAPI for the GoldTrace frontend.
+
+IMPORTANT:
+
+GoldTrace must NOT treat a single abnormal sensor as legal proof of
+illegal mining.
+
+The system must NOT output:
+
+"CONFIRMED ILLEGAL MINING"
+
+Instead use:
+
+POSSIBLE_MINING_ACTIVITY
+
+HIGH_RISK_MINING_ACTIVITY
+
+SUSPECTED_GALAMSEY_ACTIVITY
+
+The purpose is to provide an actionable early-warning and investigation
+location to authorized authorities.
+
+======================================================================
+1. PHYSICAL ARCHITECTURE
+======================================================================
+
+NODE A
+
+- ESP32-S3
+- Turbidity sensor
+- ADS1115 ADC
+- INMP441 I2S microphone
+- Geophone / vibration sensor
+- Geophone signal-conditioning amplifier
+- DS18B20 waterproof temperature sensor
+- RFM95 / SX1276 LoRa module
+
+NODE B
+
+- ESP32-S3
+- Turbidity sensor
+- ADS1115 ADC
+- INMP441 I2S microphone
+- Geophone / vibration sensor
+- Geophone signal-conditioning amplifier
+- DS18B20 waterproof temperature sensor
+- RFM95 / SX1276 LoRa module
+
+CENTRAL GATEWAY
+
+- Raspberry Pi 5, 8GB
+- RFM95 / SX1276 LoRa receiver
+- 20x4 LCD
+- DS3231 RTC
+- SIM7600 4G/GSM module
+- Local storage
+- SQLite database initially
+- Machine-learning engine
+- Deep-learning inference engine
+- Localization engine
+- GIS/geospatial engine
+- Risk engine
+- Event tracker
+- Alert manager
+- Agency notification system
+- FastAPI backend
+
+======================================================================
+2. FULL SYSTEM FLOW
+======================================================================
+
+NODE A                            NODE B
+Sensors                           Sensors
+   ↓                                 ↓
+ESP32-S3                         ESP32-S3
+   ↓                                 ↓
+LoRa ──────────────┐   ┌──────────── LoRa
+                   ↓   ↓
+              RASPBERRY PI 5
+                    ↓
+             Packet validation
+                    ↓
+             Synchronization
+                    ↓
+             Signal processing
+                    ↓
+             Feature extraction
+                    ↓
+       ┌────────────┼────────────┐
+       ↓            ↓            ↓
+   Audio AI    Vibration AI   Environment ML
+       ↓            ↓            ↓
+       └────────────┼────────────┘
+                    ↓
+             Anomaly Detection
+                    ↓
+              Sensor Fusion
+                    ↓
+                Risk Engine
+                    ↓
+             Event Persistence
+                    ↓
+               LOCALIZATION
+                    ↓
+             GEOSPATIAL ENGINE
+                    ↓
+          Suspected River Segment
+                    ↓
+                 MAP DATA
+                    ↓
+             ALERT MANAGER
+                    ↓
+        Is event HIGH/CRITICAL?
+              ↓             ↓
+             NO            YES
+              ↓             ↓
+         Log event      Agency Dispatcher
+                             ↓
+               ┌─────────────┼──────────────┐
+               ↓             ↓              ↓
+             SMS           HTTPS          Email
+           SIM7600        Webhook         Optional
+               ↓             ↓              ↓
+               AUTHORIZED SECURITY /
+               ENVIRONMENTAL AGENCIES
+                             ↓
+                      Incident Response
+
+The same incident and location must also appear on the GoldTrace
+dashboard/map.
+
+======================================================================
+3. MULTI-SENSOR ML PRINCIPLE
+======================================================================
+
+Never use:
+
+high turbidity = mining
+
+Never use:
+
+machine sound = mining
+
+Never use:
+
+vibration = mining
+
+A serious GoldTrace mining alert requires agreement between multiple
+independent signals.
+
+Important evidence includes:
+
+- downstream turbidity increase
+- machinery-like acoustic signature
+- heavy machinery vibration
+- persistence
+- upstream/downstream difference
+- anomaly score
+- environmental model
+- sensor health
+- time synchronization
+- model confidence
+
+High rainfall with muddy water but no machinery should NOT generate a
+CRITICAL galamsey alert.
+
+Machinery sound without river disturbance should normally produce:
+
+MACHINERY_ACTIVITY
+
+rather than:
+
+HIGH_RISK_MINING_ACTIVITY
+
+======================================================================
+4. ML FRAMEWORK POLICY
+======================================================================
+
+PyTorch and TensorFlow are allowed.
+
+Preferred primary deep-learning framework:
+
+PyTorch.
+
+Use PyTorch where deep learning gives a measurable advantage,
+especially:
+
+- audio classification
+- excavator recognition
+- machinery recognition
+- vibration waveform recognition
+- spectrogram analysis
+- temporal patterns
+
+Use scikit-learn where suitable for:
+
+- environmental classification
+- turbidity classification
+- anomaly detection
+- final sensor fusion
+- tabular data
+
+Heavy training should run on a laptop/workstation.
+
+Raspberry Pi 5 should primarily perform inference.
+
+Preferred edge deployment:
+
+PyTorch
+    ↓
+ONNX
+    ↓
+ONNX Runtime
+    ↓
+Raspberry Pi 5
+
+TensorFlow/TFLite may be used if benchmarks show an advantage.
+
+Do not use both frameworks unnecessarily.
+
+======================================================================
+5. FINAL EVENT CLASSES
+======================================================================
+
+Support:
+
+SAFE
+
+SUSPICIOUS_ENVIRONMENTAL_CHANGE
+
+MACHINERY_ACTIVITY
+
+POSSIBLE_MINING_ACTIVITY
+
+HIGH_RISK_MINING_ACTIVITY
+
+SYSTEM_UNCERTAIN
+
+For human-facing alerts, HIGH_RISK_MINING_ACTIVITY can be described as:
+
+"Suspected galamsey/mining activity requiring investigation."
+
+Never describe ML output as legal confirmation.
+
+======================================================================
+6. RISK LEVELS
+======================================================================
+
+SAFE
+→ LOW
+
+SUSPICIOUS_ENVIRONMENTAL_CHANGE
+→ MEDIUM
+
+MACHINERY_ACTIVITY
+→ MEDIUM
+
+POSSIBLE_MINING_ACTIVITY
+→ HIGH
+
+HIGH_RISK_MINING_ACTIVITY
+→ CRITICAL
+
+SYSTEM_UNCERTAIN
+→ UNKNOWN
+
+======================================================================
+7. FALSE-POSITIVE SCENARIOS
+======================================================================
+
+Training and testing must include:
+
+- normal river flow
+- rainfall
+- heavy rainfall
+- thunderstorms
+- muddy runoff
+- floods
+- naturally turbid water
+- wind
+- trees moving
+- people
+- animals
+- motorcycles
+- cars
+- trucks
+- boats
+- generators
+- farming equipment
+- construction equipment
+- pumps
+- excavators
+- multiple machines
+- temporary vibration spikes
+- sensor noise
+- sensor failures
+- missing nodes
+- communication failure
+
+CRITICAL must not result from one abnormal input.
+
+======================================================================
+8. NODE LOCATION CONFIGURATION
+======================================================================
+
+Every deployed node must have a known location.
+
+Because field sensor stations are fixed, their GPS coordinates may be
+registered during installation instead of requiring GPS hardware on
+every node.
+
+Store node data such as:
+
+{
+    "node_id": "NODE_A",
+    "name": "River Monitoring Node A",
+    "latitude": 5.6037,
+    "longitude": -0.1870,
+    "river_id": "RIVER_001",
+    "river_name": "Example River",
+    "position_order": 1,
+    "position_type": "UPSTREAM",
+    "district": "Example District",
+    "region": "Example Region"
+}
+
+NODE B example:
+
+{
+    "node_id": "NODE_B",
+    "latitude": 5.6081,
+    "longitude": -0.1814,
+    "river_id": "RIVER_001",
+    "position_order": 2,
+    "position_type": "DOWNSTREAM"
+}
+
+Do not hardcode coordinates throughout the source.
+
+Store them in configuration/database.
+
+Future mobile nodes may optionally use GNSS/GPS.
+
+======================================================================
+9. RIVER SEGMENTS
+======================================================================
+
+Create river segments connecting monitoring nodes.
+
+Example:
+
+{
+    "segment_id": "SEGMENT_A_B",
+    "river_id": "RIVER_001",
+    "from_node": "NODE_A",
+    "to_node": "NODE_B",
+    "coordinates": [
+        [5.6037, -0.1870],
+        [5.6050, -0.1856],
+        [5.6062, -0.1837],
+        [5.6081, -0.1814]
+    ]
+}
+
+Support GeoJSON.
+
+This allows the frontend map to highlight the actual monitored river
+section instead of only displaying text.
+
+======================================================================
+10. RAW SENSOR PACKET
+======================================================================
+
+Support:
+
+{
+    "node_id": "NODE_A",
+    "timestamp": "2026-09-14T12:10:00Z",
+
+    "turbidity_raw": 2345,
+    "turbidity_ntu": 18.4,
+
+    "water_temperature_c": 26.3,
+
+    "audio_samples": [...],
+    "audio_sample_rate": 16000,
+
+    "vibration_samples": [...],
+    "vibration_sample_rate": 1000,
+
+    "battery_voltage": 12.5,
+
+    "lora_rssi": -78,
+    "lora_snr": 7.2
+}
+
+======================================================================
+11. TIME SYNCHRONIZATION
+======================================================================
+
+Node A and Node B must be compared using aligned time windows.
+
+Implement:
+
+- timestamp alignment
+- synchronization tolerance
+- stale packet rejection
+- missing packet handling
+- duplicate detection
+- out-of-order packet handling
+
+Do not compare unrelated events.
+
+======================================================================
+12. TURBIDITY FEATURES
+======================================================================
+
+Implement:
+
+turbidity_current
+turbidity_mean
+turbidity_median
+turbidity_std
+turbidity_min
+turbidity_max
+turbidity_range
+turbidity_rate_of_change
+turbidity_percent_change
+turbidity_moving_average
+turbidity_ema
+turbidity_baseline_difference
+turbidity_baseline_ratio
+turbidity_spike_count
+turbidity_event_duration
+turbidity_slope
+
+======================================================================
+13. TEMPERATURE FEATURES
+======================================================================
+
+Implement:
+
+temperature_current
+temperature_mean
+temperature_std
+temperature_min
+temperature_max
+temperature_baseline_difference
+temperature_rate_of_change
+temperature_upstream_downstream_difference
+
+======================================================================
+14. AUDIO PREPROCESSING
+======================================================================
+
+For INMP441:
+
+- DC removal
+- normalization
+- filtering
+- clipping detection
+- silence detection
+- noise detection
+- resampling
+- fixed window creation
+
+Default sample rate:
+
+16000 Hz
+
+Support:
+
+8000
+16000
+22050
+
+======================================================================
+15. AUDIO FEATURES
+======================================================================
+
+Implement:
+
+audio_rms
+audio_peak
+audio_mean
+audio_std
+audio_energy
+zero_crossing_rate
+dominant_frequency
+spectral_centroid
+spectral_bandwidth
+spectral_rolloff
+spectral_flatness
+spectral_flux
+low_frequency_energy
+mid_frequency_energy
+high_frequency_energy
+machine_band_energy
+harmonic_energy
+MFCC
+MFCC mean
+MFCC standard deviation
+delta MFCC
+delta-delta MFCC where useful
+
+======================================================================
+16. AUDIO DEEP LEARNING
+======================================================================
+
+Classes:
+
+NORMAL_ENVIRONMENT
+FLOWING_WATER
+RAIN
+HEAVY_RAIN
+WIND
+HUMAN_ACTIVITY
+MOTORBIKE
+VEHICLE
+TRUCK
+BOAT
+GENERATOR
+FARM_MACHINERY
+CONSTRUCTION_MACHINERY
+WATER_PUMP
+EXCAVATOR_LIKE
+MULTIPLE_MACHINES
+UNKNOWN_MACHINE
+UNKNOWN_AUDIO
+
+Build:
+
+A. Classical audio baseline using engineered features.
+
+Candidate:
+RandomForest
+ExtraTrees
+
+B. Lightweight PyTorch 2D CNN using log-mel spectrograms.
+
+Architecture:
+
+Conv2D
+BatchNorm
+ReLU
+Pool
+
+Conv2D
+BatchNorm
+ReLU
+Pool
+
+Conv2D
+BatchNorm
+ReLU
+AdaptiveAvgPool
+
+Dropout
+
+Classifier
+
+Compare both.
+
+Return:
+
+{
+    "audio_class": "EXCAVATOR_LIKE",
+    "confidence": 0.91,
+    "machine_probability": 0.96
+}
+
+======================================================================
+17. VIBRATION PROCESSING
+======================================================================
+
+Implement:
+
+detrending
+DC removal
+normalization
+filtering
+windowing
+FFT
+power spectral density
+transient detection
+signal-quality analysis
+
+======================================================================
+18. VIBRATION FEATURES
+======================================================================
+
+Implement:
+
+vibration_rms
+vibration_peak
+vibration_mean
+vibration_std
+vibration_variance
+vibration_energy
+vibration_zero_crossing_rate
+vibration_dominant_frequency
+vibration_spectral_centroid
+vibration_spectral_bandwidth
+vibration_band_energy_low
+vibration_band_energy_mid
+vibration_band_energy_high
+vibration_kurtosis
+vibration_skewness
+vibration_crest_factor
+vibration_impulse_factor
+vibration_event_duration
+vibration_persistence
+
+======================================================================
+19. VIBRATION CLASSIFIER
+======================================================================
+
+Classes:
+
+NORMAL_GROUND
+FOOTSTEPS
+ANIMAL_MOVEMENT
+MOTORBIKE
+VEHICLE_PASSING
+TRUCK
+CONSTRUCTION_ACTIVITY
+WATER_PUMP_VIBRATION
+HEAVY_MACHINERY
+EXCAVATOR_LIKE_VIBRATION
+CONTINUOUS_ENGINE
+IMPACT_EVENT
+UNKNOWN_VIBRATION
+
+Build:
+
+Classical candidate:
+
+RandomForest
+ExtraTrees
+HistGradientBoosting
+
+Deep-learning candidate:
+
+small PyTorch 1D CNN.
+
+Compare both using:
+
+accuracy
+macro F1
+machinery recall
+false-positive rate
+latency
+memory
+model size
+
+======================================================================
+20. ENVIRONMENTAL MODEL
+======================================================================
+
+Classes:
+
+NORMAL_RIVER
+RAINFALL_RUNOFF
+HEAVY_RAIN_EVENT
+SUDDEN_TURBIDITY_EVENT
+PERSISTENT_POLLUTION
+DOWNSTREAM_DISTURBANCE
+UNKNOWN_ENVIRONMENTAL_CHANGE
+
+Candidate algorithms:
+
+RandomForest
+ExtraTrees
+HistGradientBoosting
+GradientBoosting
+
+======================================================================
+21. NODE-TO-NODE FEATURES
+======================================================================
+
+Implement:
+
+turbidity_difference
+turbidity_ratio
+turbidity_percent_increase
+
+temperature_difference
+
+audio_rms_difference
+audio_machine_probability_difference
+
+vibration_rms_difference
+vibration_energy_difference
+vibration_machinery_probability_difference
+
+upstream_normal_downstream_abnormal
+
+downstream_pollution_score
+
+simultaneous_audio_vibration_flag
+simultaneous_audio_turbidity_flag
+simultaneous_vibration_turbidity_flag
+
+multi_sensor_confirmation_score
+
+node_agreement_score
+node_disagreement_score
+
+event_persistence_score
+
+machine_environment_correlation
+
+spatial_change_score
+
+======================================================================
+22. ROLLING WINDOWS
+======================================================================
+
+Support:
+
+1 second
+5 seconds
+10 seconds
+30 seconds
+60 seconds
+
+Use short windows for sudden machinery onset.
+
+Use medium windows for persistence.
+
+Use long windows for river/environment trends.
+
+======================================================================
+23. BASELINE MANAGER
+======================================================================
+
+Create:
+
+baseline_manager.py
+
+Store per-node baselines:
+
+normal turbidity
+normal vibration
+normal audio
+normal temperature
+time-of-day patterns
+
+Files:
+
+data/baselines/NODE_A.json
+data/baselines/NODE_B.json
+
+Provide:
+
+python -m src.calibrate_baseline
+
+Abnormal events must not immediately contaminate baseline values.
+
+======================================================================
+24. ANOMALY DETECTION
+======================================================================
+
+Use:
+
+IsolationForest
+
+Output:
+
+anomaly_score
+is_anomaly
+
+An anomaly by itself must NOT trigger agency dispatch.
+
+======================================================================
+25. SENSOR FUSION
+======================================================================
+
+Build final fusion classifier.
+
+Inputs:
+
+environment probabilities
+audio probabilities
+machine probability
+vibration probabilities
+machinery probability
+turbidity features
+Node A/B differences
+anomaly score
+event persistence
+sensor health
+baseline deviations
+
+Candidate models:
+
+RandomForest
+ExtraTrees
+HistGradientBoosting
+GradientBoosting
+
+Final classes:
+
+SAFE
+SUSPICIOUS_ENVIRONMENTAL_CHANGE
+MACHINERY_ACTIVITY
+POSSIBLE_MINING_ACTIVITY
+HIGH_RISK_MINING_ACTIVITY
+
+======================================================================
+26. RISK ENGINE
+======================================================================
+
+Create:
+
+risk_engine.py
+
+Combine:
+
+- fusion probability
+- audio machine probability
+- vibration machinery probability
+- turbidity increase
+- upstream/downstream difference
+- anomaly score
+- persistence
+- sensor agreement
+- health
+- confidence
+
+Example:
+
+IF:
+
+large downstream turbidity increase
+
+AND
+
+strong machinery audio
+
+AND
+
+heavy machinery vibration
+
+AND
+
+event is persistent
+
+AND
+
+multiple sensors agree
+
+AND
+
+fusion model predicts mining-like activity
+
+THEN:
+
+HIGH_RISK_MINING_ACTIVITY
+CRITICAL
+
+and the incident becomes eligible for automatic security-agency
+dispatch.
+
+======================================================================
+27. CONFIDENCE ENGINE
+======================================================================
+
+Create:
+
+confidence_engine.py
+
+Use:
+
+model probability
+cross-model agreement
+sensor health
+data availability
+data quality
+event duration
+synchronization quality
+OOD result
+
+Return:
+
+0.0 to 1.0
+
+======================================================================
+28. SENSOR VALIDATION
+======================================================================
+
+Create:
+
+sensor_validator.py
+
+Detect:
+
+missing values
+NaN
+infinity
+impossible turbidity
+impossible temperatures
+frozen sensors
+constant sensor output
+unrealistic spikes
+audio clipping
+empty buffers
+corrupt vibration buffers
+bad sampling rate
+stale readings
+missing nodes
+LoRa timeout
+low battery
+poor link quality
+
+Statuses:
+
+HEALTHY
+DEGRADED
+FAILED
+UNKNOWN
+
+Insufficient information:
+
+SYSTEM_UNCERTAIN
+
+SYSTEM_UNCERTAIN must NEVER trigger an automatic security alert.
+
+======================================================================
+29. OOD / UNKNOWN DETECTION
+======================================================================
+
+Implement:
+
+IsolationForest
+probability entropy
+confidence threshold
+feature distance
+
+Unknown conditions should produce:
+
+SYSTEM_UNCERTAIN
+
+or an appropriate UNKNOWN class.
+
+Do not force an unknown condition into HIGH_RISK_MINING_ACTIVITY.
+
+======================================================================
+30. EVENT TRACKER
+======================================================================
+
+Create:
+
+event_tracker.py
+
+Fields:
+
+event_id
+event_start_time
+last_seen_time
+event_duration
+consecutive_detection_count
+maximum_risk
+mean_confidence
+maximum_confidence
+nodes_involved
+classification_history
+suspected_zone
+agency_dispatch_status
+
+IDs:
+
+GT-20260914-000001
+
+Do not generate a new incident every second for the same continuing
+event.
+
+======================================================================
+31. LOCALIZATION ENGINE
+======================================================================
+
+Create:
+
+localization.py
+
+Initial river topology:
+
+NODE_A = upstream
+NODE_B = downstream
+
+Rules:
+
+Node A normal
+Node B abnormal
+
+→ BETWEEN_NODE_A_AND_NODE_B
+
+Node A abnormal
+Node B abnormal
+
+→ UPSTREAM_OF_NODE_A_OR_WIDESPREAD_EVENT
+
+Node A abnormal
+Node B normal
+
+→ NODE_A_LOCAL_ANOMALY
+
+Both normal
+
+→ NO_SUSPECTED_ZONE
+
+Support Node C, D, E, F etc.
+
+======================================================================
+32. GEOSPATIAL ENGINE
+======================================================================
+
+Create:
+
+geospatial.py
+
+This module converts the logical localization result into geographic
+information.
+
+For:
+
+BETWEEN_NODE_A_AND_NODE_B
+
+look up:
+
+NODE_A coordinates
+
+NODE_B coordinates
+
+river segment SEGMENT_A_B
+
+Return:
+
+{
+    "zone_code": "BETWEEN_NODE_A_AND_NODE_B",
+
+    "segment_id": "SEGMENT_A_B",
+
+    "from_node": "NODE_A",
+    "to_node": "NODE_B",
+
+    "from_coordinates": {
+        "latitude": 5.6037,
+        "longitude": -0.1870
+    },
+
+    "to_coordinates": {
+        "latitude": 5.6081,
+        "longitude": -0.1814
+    },
+
+    "centroid": {
+        "latitude": 5.6059,
+        "longitude": -0.1842
+    },
+
+    "river": "RIVER_001",
+
+    "district": "Example District",
+
+    "region": "Example Region"
+}
+
+Also return GeoJSON.
+
+Example:
+
+{
+    "type": "Feature",
+    "properties": {
+        "risk": "CRITICAL",
+        "event_id": "GT-20260914-000001"
+    },
+    "geometry": {
+        "type": "LineString",
+        "coordinates": [
+            [-0.1870, 5.6037],
+            [-0.1856, 5.6050],
+            [-0.1837, 5.6062],
+            [-0.1814, 5.6081]
+        ]
+    }
+}
+
+IMPORTANT:
+
+GeoJSON coordinate order is:
+
+longitude, latitude
+
+not:
+
+latitude, longitude.
+
+======================================================================
+33. SUSPECTED AREA DISPLAY
+======================================================================
+
+Every HIGH or CRITICAL event must contain sufficient map information
+for the GoldTrace frontend to show WHERE the activity appears to be
+occurring.
+
+The frontend must be able to display:
+
+NODE A
+    ↓
+highlighted river section
+    ↓
+suspected activity zone
+    ↓
+NODE B
+
+The risk segment should be:
+
+YELLOW for MEDIUM
+ORANGE for HIGH
+RED for CRITICAL
+GRAY for UNKNOWN
+
+Support:
+
+- node markers
+- river segments
+- risk polylines
+- risk polygons
+- event markers
+- GeoJSON
+- map centroid
+- bounds for zoom-to-event
+
+======================================================================
+34. LOCATION PRECISION
+======================================================================
+
+Do not claim exact machine coordinates unless supporting sensor
+geometry actually permits it.
+
+Initially, GoldTrace should report a suspected monitored river segment.
+
+Example:
+
+"Possible activity detected within the monitored river section between
+Node A and Node B."
+
+If the distance between Node A and B is known, include it.
+
+Example:
+
+Suspected section:
+River Segment A-B
+
+Approximate monitored length:
+1.2 km
+
+This is more scientifically defensible than pretending the system
+knows an exact excavator coordinate.
+
+======================================================================
+35. OPTIONAL FUTURE LOCATION REFINEMENT
+======================================================================
+
+Design interfaces for future:
+
+- additional Node C/D/E
+- GNSS
+- acoustic triangulation
+- vibration localization
+- signal-strength estimation
+- drone verification
+- camera verification
+
+Do not require them for initial system operation.
+
+======================================================================
+36. SYNTHETIC DATA
+======================================================================
+
+Generate at least:
+
+100,000 processed windows.
+
+Scenarios:
+
+NORMAL_RIVER
+RAIN
+HEAVY_RAIN
+THUNDERSTORM
+RUNOFF
+FLOOD_TURBIDITY
+WIND
+PEOPLE
+ANIMALS
+MOTORBIKE
+CAR
+TRUCK
+BOAT
+GENERATOR
+FARM_MACHINERY
+CONSTRUCTION
+WATER_PUMP
+EXCAVATOR
+MULTIPLE_MACHINES
+SENSOR_NOISE
+SENSOR_FAILURE
+COMMUNICATION_FAILURE
+POSSIBLE_MINING_ACTIVITY
+HIGH_RISK_MINING_ACTIVITY
+
+Include overlap, noise, drift, missing values and difficult false
+positives.
+
+Create event IDs and session IDs.
+
+Never present synthetic accuracy as real-world field accuracy.
+
+======================================================================
+37. REAL DATA INGESTION
+======================================================================
+
+Support:
+
+CSV
+JSON
+JSONL
+WAV
+NPY
+NPZ
+
+Folders:
+
+data/raw/audio/
+data/raw/vibration/
+data/raw/environment/
+data/raw/events/
+data/processed/
+data/synthetic/
+
+======================================================================
+38. DATA LEAKAGE
+======================================================================
+
+Do not randomly split windows from the same event across train and
+test.
+
+Split by:
+
+event_id
+session_id
+location_id
+
+Eventually use unseen physical locations for final evaluation.
+
+======================================================================
+39. TRAINING PIPELINE
+======================================================================
+
+Create:
+
+train_audio.py
+train_vibration.py
+train_environment.py
+train_anomaly.py
+train_fusion.py
+train_all.py
+
+Audio:
+
+classical baseline
++
+PyTorch CNN
+
+Vibration:
+
+classical baseline
++
+PyTorch 1D CNN
+
+Environment:
+
+classical candidate models
+
+Anomaly:
+
+IsolationForest
+
+Fusion:
+
+classical candidate models
+
+======================================================================
+40. DEEP LEARNING TRAINING
+======================================================================
+
+Implement:
+
+PyTorch Dataset
+DataLoader
+training loop
+validation
+early stopping
+checkpointing
+learning-rate scheduling
+class weighting
+reproducible seeds
+CUDA when available
+CPU fallback
+
+Do not require CUDA.
+
+======================================================================
+41. EDGE EXPORT
+======================================================================
+
+Create:
+
+export_models.py
+
+Export:
+
+goldtrace_audio_v1.onnx
+goldtrace_vibration_v1.onnx
+
+Validate ONNX output against PyTorch.
+
+Use ONNX Runtime on Raspberry Pi when appropriate.
+
+======================================================================
+42. MODEL EVALUATION
+======================================================================
+
+Calculate:
+
+accuracy
+precision
+recall
+F1
+macro F1
+weighted F1
+confusion matrix
+per-class metrics
+ROC-AUC where appropriate
+PR-AUC where appropriate
+
+Specifically calculate:
+
+HIGH_RISK precision
+HIGH_RISK recall
+HIGH_RISK false-positive rate
+HIGH_RISK false-negative rate
+
+rainfall false-positive rate
+
+vehicle false-positive rate
+
+machinery recall
+
+Agency dispatch simulation must also be tested against false-positive
+scenarios.
+
+======================================================================
+43. MODEL SELECTION
+======================================================================
+
+Do not select only by accuracy.
+
+Consider:
+
+macro F1
+high-risk recall
+false-positive rate
+rainfall false alarms
+vehicle false alarms
+latency
+RAM
+CPU
+model size
+Raspberry Pi suitability
+
+======================================================================
+44. FINAL PREDICTION STRUCTURE
+======================================================================
+
+Return something such as:
+
+{
+    "event_id": "GT-20260914-000001",
+
+    "timestamp": "2026-09-14T18:42:11Z",
+
+    "prediction": "HIGH_RISK_MINING_ACTIVITY",
+
+    "human_description":
+        "Suspected galamsey/mining activity requiring investigation",
+
+    "risk_level": "CRITICAL",
+
+    "confidence": 0.93,
+
+    "suspected_zone": "BETWEEN_NODE_A_AND_NODE_B",
+
+    "location": {
+
+        "river_id": "RIVER_001",
+
+        "river_name": "Example River",
+
+        "segment_id": "SEGMENT_A_B",
+
+        "from_node": "NODE_A",
+
+        "to_node": "NODE_B",
+
+        "centroid": {
+            "latitude": 5.6059,
+            "longitude": -0.1842
+        },
+
+        "district": "Example District",
+
+        "region": "Example Region",
+
+        "geojson": {
+            "type": "LineString",
+            "coordinates": [...]
+        }
+    },
+
+    "node_results": {
+
+        "NODE_A": {
+            "environment": "NORMAL_RIVER",
+            "audio": "NORMAL_ENVIRONMENT",
+            "vibration": "NORMAL_GROUND",
+            "health": "HEALTHY"
+        },
+
+        "NODE_B": {
+            "environment": "DOWNSTREAM_DISTURBANCE",
+            "audio": "EXCAVATOR_LIKE",
+            "audio_machine_probability": 0.91,
+            "vibration": "HEAVY_MACHINERY",
+            "vibration_machinery_probability": 0.87,
+            "health": "HEALTHY"
+        }
+    },
+
+    "evidence": {
+        "turbidity_difference": 62.4,
+        "audio_machine_probability": 0.91,
+        "vibration_machinery_probability": 0.87,
+        "persistent_activity": true,
+        "multi_sensor_confirmation": true,
+        "anomaly_score": 0.79
+    },
+
+    "agency_alert": {
+        "eligible": true,
+        "dispatch_required": true,
+        "dispatch_status": "PENDING"
+    },
+
+    "recommendation":
+        "Security/environmental authorities should investigate the monitored river section between Node A and Node B."
+}
+
+======================================================================
+45. SECURITY AGENCY ALERTING
+======================================================================
+
+THIS IS A CORE GOLDTRACE FEATURE.
+
+Create:
+
+agency_alert_dispatcher.py
+
+When GoldTrace produces a qualifying HIGH or CRITICAL suspected mining
+event, the system must send an alert to configured authorized
+security/environmental contacts.
+
+Never hardcode random government phone numbers.
+
+Recipients must be configured by an administrator.
+
+Only officially approved/authorized recipients should receive
+production alerts.
+
+======================================================================
+46. ALERT POLICY
+======================================================================
+
+Default policy:
+
+LOW
+→ no agency alert
+
+MEDIUM
+→ dashboard/local event only
+
+HIGH
+→ notify GoldTrace monitoring/admin team
+→ optionally notify agencies depending configuration
+
+CRITICAL
+→ automatically dispatch to all configured authorized emergency /
+security/environmental recipients
+
+But automatic CRITICAL dispatch is allowed only when:
+
+1. sensor health is sufficient
+2. event is persistent
+3. more than one independent sensor supports the event
+4. confidence exceeds configured threshold
+5. localization exists
+6. event is not SYSTEM_UNCERTAIN
+7. event is not a duplicate
+8. alert cooldown rules permit dispatch
+
+Example configuration:
+
+agency_alerts:
+    enabled: true
+
+    production_mode: false
+
+    dispatch_threshold: CRITICAL
+
+    minimum_confidence: 0.85
+
+    minimum_agreeing_sensors: 3
+
+    minimum_persistence_seconds: 30
+
+    require_location: true
+
+    cooldown_seconds: 300
+
+    max_retries: 3
+
+production_mode=false must prevent real external alerts during
+development/testing.
+
+======================================================================
+47. AUTHORIZED RECIPIENT REGISTRY
+======================================================================
+
+Create:
+
+agency_registry.py
+
+Store recipients such as:
+
+{
+    "id": "AGENCY_001",
+    "name": "Authorized Security Response Team",
+    "type": "SECURITY",
+    "enabled": true,
+
+    "channels": {
+        "sms": true,
+        "webhook": false,
+        "email": false
+    },
+
+    "phone": "+233XXXXXXXXX"
+}
+
+Possible recipient categories:
+
+SECURITY
+
+ENVIRONMENTAL
+
+MINING_ENFORCEMENT
+
+DISTRICT_RESPONSE
+
+GOLDTRACE_ADMIN
+
+Do not hardcode specific agency names as mandatory.
+
+Make deployment-specific recipient configuration possible.
+
+======================================================================
+48. SIM7600 SMS ALERTS
+======================================================================
+
+Create:
+
+sim7600_sms.py
+
+Support sending SMS using SIM7600 through the Raspberry Pi.
+
+The implementation must be isolated behind a notification interface.
+
+Create:
+
+NotificationChannel
+
+Implement:
+
+SIM7600SMSChannel
+
+MockSMSChannel
+
+WebhookChannel
+
+OptionalEmailChannel
+
+Use serial/AT command support appropriate for SIM7600.
+
+Support:
+
+AT modem detection
+
+SIM status
+
+network registration
+
+signal status
+
+SMS text mode
+
+message sending
+
+timeout handling
+
+retry
+
+response parsing
+
+delivery result logging
+
+Do not assume the modem is always available.
+
+======================================================================
+49. SECURITY ALERT MESSAGE
+======================================================================
+
+Example SMS:
+
+GOLDTRACE CRITICAL ALERT
+
+Suspected mining/galamsey activity detected.
+
+Event:
+GT-20260914-000001
+
+Risk:
+CRITICAL
+
+Confidence:
+93%
+
+Area:
+River Segment A-B
+
+Between:
+NODE_A and NODE_B
+
+Approx. Location:
+5.6059, -0.1842
+
+District:
+Example District
+
+Evidence:
+Turbidity +62.4 NTU
+Machine Audio 91%
+Heavy Vibration 87%
+
+Duration:
+42 sec
+
+Action:
+Investigate suspected river section.
+
+Do NOT say:
+
+"Illegal miners confirmed."
+
+======================================================================
+50. LOCATION LINK IN ALERT
+======================================================================
+
+When internet connectivity is available, optionally include a
+configurable map/deep-link generated from the suspected-area centroid.
+
+Do not hardcode one commercial map provider throughout the code.
+
+Create:
+
+map_link_provider.py
+
+Support an interface such as:
+
+generate_map_link(latitude, longitude)
+
+The frontend itself should use GeoJSON and coordinates rather than
+depending on the SMS link.
+
+======================================================================
+51. ALERT DELIVERY STATUS
+======================================================================
+
+Every attempted delivery must have:
+
+delivery_id
+
+event_id
+
+agency_id
+
+channel
+
+destination
+
+created_at
+
+attempted_at
+
+delivered_at
+
+status
+
+retry_count
+
+provider_response
+
+error
+
+Statuses:
+
+PENDING
+
+SENDING
+
+SENT
+
+FAILED
+
+RETRYING
+
+ACKNOWLEDGED
+
+Do not claim an agency received an alert unless the communication
+channel confirms an appropriate success result.
+
+======================================================================
+52. ALERT RETRIES
+======================================================================
+
+Implement retries.
+
+Example:
+
+Attempt 1
+→ fails
+
+wait
+
+Attempt 2
+→ fails
+
+wait
+
+Attempt 3
+→ success
+
+Use configurable retry intervals.
+
+Do not retry forever.
+
+======================================================================
+53. MULTI-CHANNEL ALERTING
+======================================================================
+
+Support:
+
+Primary:
+SIM7600 SMS
+
+Optional:
+HTTPS webhook
+
+Optional:
+email
+
+Future:
+mobile push notification
+
+If one channel fails and another is enabled, allow fallback.
+
+Example:
+
+SMS fails
+→ try HTTPS webhook if connectivity exists.
+
+======================================================================
+54. OFFLINE ALERT QUEUE
+======================================================================
+
+If mobile network temporarily fails:
+
+DO NOT discard the alert.
+
+Create a persistent outbound queue.
+
+Store:
+
+event
+recipients
+message
+location
+attempt count
+next retry time
+
+When connectivity returns:
+
+retry pending notifications.
+
+Critical events must remain in the queue until:
+
+sent successfully
+
+or
+
+retry policy is exhausted.
+
+======================================================================
+55. ALERT DEDUPLICATION
+======================================================================
+
+Do not send the same event every second.
+
+Use:
+
+event ID
+
+location/segment
+
+classification
+
+risk
+
+cooldown
+
+persistence
+
+Example:
+
+An active event lasting 20 minutes should not produce 1,200 identical
+SMS messages.
+
+Allow escalation.
+
+Example:
+
+MEDIUM
+→ HIGH
+→ CRITICAL
+
+CRITICAL escalation may trigger a new agency notification.
+
+======================================================================
+56. AGENCY ACKNOWLEDGEMENT
+======================================================================
+
+Create infrastructure for alert acknowledgement.
+
+Statuses:
+
+DISPATCHED
+
+ACKNOWLEDGED
+
+INVESTIGATING
+
+RESOLVED
+
+FALSE_ALARM
+
+Optional API:
+
+POST /alerts/{alert_id}/acknowledge
+
+POST /events/{event_id}/status
+
+Record:
+
+acknowledged_by
+
+acknowledged_at
+
+notes
+
+======================================================================
+57. HUMAN REVIEW OPTION
+======================================================================
+
+Support configurable dispatch modes:
+
+OFF
+
+MANUAL
+
+AUTOMATIC_CRITICAL
+
+AUTOMATIC_HIGH_AND_CRITICAL
+
+DEMO
+
+In AUTOMATIC_CRITICAL:
+
+validated CRITICAL events are immediately sent.
+
+In MANUAL:
+
+dashboard operator must approve dispatch.
+
+In DEMO:
+
+alerts are generated and logged but never leave the machine.
+
+This is essential for safe development and competition demonstrations.
+
+======================================================================
+58. MAP API
+======================================================================
+
+Add endpoints:
+
+GET /map/nodes
+
+GET /map/rivers
+
+GET /map/segments
+
+GET /map/events
+
+GET /map/risk-zones
+
+GET /map/events/{event_id}
+
+Example:
+
+GET /map/events/GT-20260914-000001
+
+returns:
+
+{
+    "event_id": "...",
+    "risk": "CRITICAL",
+    "confidence": 0.93,
+    "geometry": {...},
+    "centroid": {...},
+    "affected_nodes": ["NODE_A", "NODE_B"]
+}
+
+======================================================================
+59. ALERT API
+======================================================================
+
+Add:
+
+GET /alerts
+
+GET /alerts/{id}
+
+GET /alerts/{id}/deliveries
+
+GET /agency-recipients
+
+POST /alerts/{id}/acknowledge
+
+POST /alerts/{id}/retry
+
+POST /alerts/{id}/dispatch
+
+GET /agency-alert/status
+
+Restrict administrative actions appropriately.
+
+======================================================================
+60. DATABASE
+======================================================================
+
+Use SQLite initially.
+
+Create tables:
+
+nodes
+
+rivers
+
+river_segments
+
+sensor_readings
+
+audio_results
+
+vibration_results
+
+environment_results
+
+features
+
+predictions
+
+events
+
+event_locations
+
+risk_zones
+
+alerts
+
+alert_deliveries
+
+agency_recipients
+
+outbound_alert_queue
+
+sensor_health
+
+model_versions
+
+system_logs
+
+baselines
+
+Structure database access so PostgreSQL can be used later.
+
+======================================================================
+61. REAL-TIME ENGINE
+======================================================================
+
+Create:
+
+realtime_engine.py
+
+Pipeline:
+
+receive sensor packet
+
+→ validate
+
+→ synchronize
+
+→ buffer
+
+→ window
+
+→ sensor health
+
+→ signal processing
+
+→ audio inference
+
+→ vibration inference
+
+→ environmental inference
+
+→ anomaly detection
+
+→ node comparison
+
+→ sensor fusion
+
+→ confidence
+
+→ risk
+
+→ persistence
+
+→ event tracking
+
+→ localization
+
+→ geospatial resolution
+
+→ save event
+
+→ generate risk zone
+
+→ determine agency alert eligibility
+
+→ send/queue agency alert
+
+→ update LCD
+
+→ update API/dashboard state
+
+→ return result
+
+======================================================================
+62. AGENCY ALERT ELIGIBILITY ENGINE
+======================================================================
+
+Create:
+
+alert_policy.py
+
+Function should produce:
+
+{
+    "eligible": true,
+    "reason": "Validated persistent CRITICAL multi-sensor event",
+    "dispatch_mode": "AUTOMATIC_CRITICAL"
+}
+
+Input:
+
+risk
+confidence
+sensor health
+persistence
+agreement count
+location availability
+event state
+previous dispatch state
+
+SYSTEM_UNCERTAIN must return:
+
+eligible=false
+
+======================================================================
+63. DASHBOARD/MAP SUPPORT
+======================================================================
+
+Even though the separate React frontend may be built later, this
+backend must already return everything required to display:
+
+- live node markers
+- node coordinates
+- river segments
+- suspected areas
+- active risk zones
+- historical event locations
+- event confidence
+- risk
+- agency-dispatch status
+
+For a CRITICAL incident, frontend should be able to show:
+
+NODE A ●
+        \
+         \ RED HIGHLIGHTED RIVER SEGMENT
+          \
+           ⚠ SUSPECTED ACTIVITY AREA
+            \
+             ● NODE B
+
+Popup:
+
+GOLDTRACE EVENT
+GT-20260914-000001
+
+Suspected Galamsey Activity
+
+Risk:
+CRITICAL
+
+Confidence:
+93%
+
+Area:
+Between Node A and Node B
+
+Agency Alert:
+SENT
+
+======================================================================
+64. MODEL EXPLAINABILITY
+======================================================================
+
+Every serious alert should explain WHY.
+
+Example:
+
+top_factors:
+
+- turbidity_difference
+- machine_audio_probability
+- vibration_machinery_probability
+- event_persistence
+- upstream_downstream_pattern
+
+The agency alert can include a concise summary.
+
+The dashboard can show the full explanation.
+
+======================================================================
+65. LCD OUTPUT
+======================================================================
+
+Create:
+
+display_formatter.py
+
+Examples:
+
+GOLDTRACE ACTIVE
+A: NORMAL
+B: HIGH RISK
+RISK: CRITICAL
+
+Next:
+
+TURB +62.4 NTU
+AUDIO 91%
+VIB   87%
+ZONE A-B
+
+Next:
+
+ALERT SENT
+AGENCY: 3
+EVENT GT-000001
+NET: ONLINE
+
+If sending fails:
+
+ALERT QUEUED
+NETWORK OFFLINE
+EVENT GT-000001
+RETRY PENDING
+
+======================================================================
+66. FASTAPI
+======================================================================
+
+Create FastAPI backend.
+
+Endpoints include:
+
+GET /health
+
+GET /system/status
+
+GET /models
+
+GET /model-metrics
+
+GET /latest-prediction
+
+GET /events
+
+GET /events/{event_id}
+
+GET /alerts
+
+GET /sensor-health
+
+GET /nodes
+
+GET /risk
+
+GET /map/nodes
+
+GET /map/rivers
+
+GET /map/segments
+
+GET /map/events
+
+GET /map/risk-zones
+
+GET /agency-recipients
+
+GET /agency-alert/status
+
+POST /predict
+
+POST /sensor-data
+
+POST /calibrate
+
+POST /alerts/{id}/acknowledge
+
+POST /alerts/{id}/retry
+
+POST /alerts/{id}/dispatch
+
+======================================================================
+67. LOGGING
+======================================================================
+
+Files:
+
+logs/goldtrace.log
+
+logs/errors.log
+
+logs/predictions.log
+
+logs/alerts.log
+
+logs/agency_dispatch.log
+
+logs/location.log
+
+Use rotating logs.
+
+Do not write sensitive credentials to logs.
+
+======================================================================
+68. CONFIGURATION
+======================================================================
+
+Create:
+
+config/settings.yaml
+
+Example sections:
+
+system:
+
+nodes:
+
+rivers:
+
+sensor_ranges:
+
+models:
+
+risk:
+
+localization:
+
+maps:
+
+alerts:
+
+agency_alerts:
+
+sim7600:
+
+database:
+
+api:
+
+logging:
+
+edge_runtime:
+
+Example:
+
+agency_alerts:
+
+    enabled: true
+
+    production_mode: false
+
+    dispatch_mode: DEMO
+
+    minimum_risk: CRITICAL
+
+    minimum_confidence: 0.85
+
+    minimum_agreeing_sensors: 3
+
+    minimum_persistence_seconds: 30
+
+    require_location: true
+
+    cooldown_seconds: 300
+
+    max_retries: 3
+
+Do not put real phone numbers, API secrets or passwords into Git.
+
+Support environment variables for secrets.
+
+======================================================================
+69. PROJECT STRUCTURE
+======================================================================
+
+Create:
+
+goldtrace_ml/
+
+    README.md
+    requirements.txt
+    requirements-dev.txt
+    pyproject.toml
+    main.py
+
+    config/
+        settings.yaml
+        agencies.example.yaml
+        nodes.example.yaml
+        rivers.example.geojson
+
+    data/
+
+        raw/
+            audio/
+            vibration/
+            environment/
+            events/
+
+        processed/
+        synthetic/
+        baselines/
+        maps/
+
+    models/
+        edge/
+        checkpoints/
+        model_registry.json
+
+    reports/
+
+    logs/
+
+    docs/
+        ML_ARCHITECTURE.md
+        ALERTING_ARCHITECTURE.md
+        GEOLOCATION_AND_MAPPING.md
+        SECURITY_AGENCY_INTEGRATION.md
+        REAL_DATA_COLLECTION_PLAN.md
+        RASPBERRY_PI_DEPLOYMENT.md
+        MODEL_VALIDATION.md
+
+    src/
+
+        __init__.py
+
+        config.py
+        schemas.py
+        utils.py
+
+        data_ingestion.py
+        data_generator.py
+        data_labelling.py
+
+        sensor_validator.py
+        synchronization.py
+        baseline_manager.py
+
+        audio_preprocessing.py
+        audio_features.py
+        audio_dataset.py
+        audio_model.py
+        audio_classifier.py
+
+        vibration_preprocessing.py
+        vibration_features.py
+        vibration_dataset.py
+        vibration_model.py
+        vibration_classifier.py
+
+        environmental_features.py
+        environmental_classifier.py
+
+        feature_engineering.py
+
+        anomaly_detector.py
+
+        fusion_classifier.py
+
+        confidence_engine.py
+        risk_engine.py
+
+        event_tracker.py
+
+        localization.py
+        geospatial.py
+        river_topology.py
+        map_link_provider.py
+
+        train_audio.py
+        train_vibration.py
+        train_environment.py
+        train_anomaly.py
+        train_fusion.py
+        train_all.py
+
+        evaluate.py
+
+        export_models.py
+        benchmark.py
+
+        model_manager.py
+
+        sensor_source.py
+        mock_sensor_stream.py
+
+        realtime_engine.py
+
+        database.py
+
+        display_formatter.py
+
+        alert_manager.py
+        alert_policy.py
+        agency_registry.py
+        agency_alert_dispatcher.py
+
+        notifications/
+            __init__.py
+            base.py
+            mock_sms.py
+            sim7600_sms.py
+            webhook.py
+            email_channel.py
+
+        retrain.py
+
+        api.py
+
+    tests/
+
+        test_sensor_validator.py
+        test_synchronization.py
+
+        test_audio_features.py
+        test_vibration_features.py
+        test_environmental_features.py
+
+        test_audio_model.py
+        test_vibration_model.py
+
+        test_anomaly.py
+        test_fusion.py
+        test_confidence.py
+        test_risk_engine.py
+
+        test_event_tracker.py
+
+        test_localization.py
+        test_geospatial.py
+        test_river_topology.py
+
+        test_alert_policy.py
+        test_alert_manager.py
+        test_agency_dispatch.py
+        test_sms_channel.py
+        test_alert_deduplication.py
+        test_offline_alert_queue.py
+
+        test_database.py
+        test_realtime_engine.py
+        test_api.py
+
+======================================================================
+70. DEPENDENCIES
+======================================================================
+
+Core:
+
+numpy
+pandas
+scipy
+scikit-learn
+joblib
+PyYAML
+pydantic
+fastapi
+uvicorn
+
+Deep learning:
+
+torch
+torchaudio
+
+Edge:
+
+onnx
+onnxruntime
+
+Communication:
+
+pyserial
+httpx
+
+Optional:
+
+librosa
+matplotlib
+tqdm
+psutil
+
+Testing:
+
+pytest
+pytest-asyncio
+
+Do not require CUDA.
+
+======================================================================
+71. RASPBERRY PI DEPLOYMENT
+======================================================================
+
+Preferred runtime:
+
+Audio CNN
+→ ONNX Runtime
+
+Vibration CNN
+→ ONNX Runtime
+
+Environment
+→ scikit-learn
+
+Anomaly
+→ scikit-learn
+
+Fusion
+→ scikit-learn
+
+Risk engine
+→ Python
+
+Localization
+→ Python
+
+Geospatial engine
+→ Python
+
+SIM7600
+→ serial/AT commands and/or supported modem interface
+
+Alert queue
+→ SQLite
+
+FastAPI
+→ API/dashboard integration
+
+======================================================================
+72. PERFORMANCE
+======================================================================
+
+Target complete inference in less than 1 second per decision window
+where practical.
+
+Do not use:
+
+unbounded buffers
+
+repeated model loading
+
+ever-growing DataFrames
+
+Models must load once.
+
+Use deques/NumPy for rolling buffers.
+
+======================================================================
+73. TESTING OF SECURITY ALERTING
+======================================================================
+
+Tests MUST prove:
+
+Normal river:
+NO agency alert.
+
+Heavy rain:
+NO CRITICAL agency alert.
+
+Vehicle:
+NO CRITICAL agency alert.
+
+Machinery without water disturbance:
+NO automatic CRITICAL galamsey dispatch.
+
+Sensor failure:
+NO agency alert.
+
+SYSTEM_UNCERTAIN:
+NO agency alert.
+
+Short vibration spike:
+NO agency alert.
+
+Persistent downstream pollution + excavator-like audio + heavy
+vibration:
+CRITICAL event.
+
+CRITICAL validated event:
+agency dispatch created.
+
+Location:
+included in alert.
+
+Network unavailable:
+alert stored in outbound queue.
+
+Network restored:
+queued alert retried.
+
+Same continuing event:
+no SMS spam.
+
+Risk escalation:
+new notification allowed.
+
+======================================================================
+74. DEMO MODE
+======================================================================
+
+Support:
+
+python main.py --mode demo
+
+and:
+
+python main.py --mode demo --scenario high_risk_mining
+
+DEMO MODE MUST NEVER SEND REAL SMS OR WEBHOOK ALERTS.
+
+Instead show:
+
+======================================================
+GOLDTRACE AGENCY ALERT — DEMO
+======================================================
+
+Event:
+GT-20260914-000001
+
+Detection:
+SUSPECTED GALAMSEY ACTIVITY
+
+Risk:
+CRITICAL
+
+Confidence:
+93%
+
+Area:
+Between Node A and Node B
+
+Coordinates:
+5.6059, -0.1842
+
+River:
+Example River
+
+Evidence:
+Turbidity +62.4 NTU
+Machine Audio 91%
+Heavy Vibration 87%
+
+Dispatch:
+SIMULATED
+
+Recipients:
+3 authorized agencies
+
+======================================================
+
+======================================================================
+75. PRODUCTION MODE
+======================================================================
+
+Real dispatch requires:
+
+agency_alerts.enabled=true
+
+AND
+
+production_mode=true
+
+AND
+
+valid configured recipients
+
+AND
+
+working SIM7600/network channel.
+
+Do not automatically switch itself into production mode.
+
+Administrator must configure production deployment intentionally.
+
+======================================================================
+76. FRONTEND-READY MAP OUTPUT
+======================================================================
+
+Backend response for an active event must make this possible:
+
+{
+    "event_id": "GT-20260914-000001",
+
+    "map": {
+
+        "center": [
+            5.6059,
+            -0.1842
+        ],
+
+        "zoom": 15,
+
+        "affected_nodes": [
+            "NODE_A",
+            "NODE_B"
+        ],
+
+        "suspected_segment": {
+            "segment_id": "SEGMENT_A_B",
+            "risk": "CRITICAL",
+            "geometry": {...}
+        }
+    }
+}
+
+The React GoldTrace dashboard will later use this data with:
+
+Leaflet
+React-Leaflet
+OpenStreetMap
+
+to show the suspicious river area visually.
+
+======================================================================
+77. REAL DATA WARNING
+======================================================================
+
+Synthetic data is for software architecture development only.
+
+Never claim synthetic evaluation represents actual field accuracy.
+
+Real deployment requires real synchronized:
+
+river data
+
+audio recordings
+
+geophone vibration recordings
+
+turbidity
+
+weather events
+
+machinery data
+
+location data.
+
+======================================================================
+78. MAIN COMMANDS
+======================================================================
+
+Create environment:
+
+python -m venv venv
+
+Install development:
+
+pip install -r requirements-dev.txt
+
+Generate dataset:
+
+python -m src.data_generator
+
+Train:
+
+python -m src.train_all
+
+Evaluate:
+
+python -m src.evaluate
+
+Export:
+
+python -m src.export_models
+
+Benchmark:
+
+python -m src.benchmark
+
+Demo:
+
+python main.py --mode demo
+
+Critical event demo:
+
+python main.py --mode demo --scenario high_risk_mining
+
+Live:
+
+python main.py --mode live
+
+API:
+
+uvicorn src.api:app --host 0.0.0.0 --port 8000
+
+Tests:
+
+pytest -v
+
+======================================================================
+79. FINAL HIGH-RISK TERMINAL OUTPUT
+======================================================================
+
+============================================================
+                         GOLDTRACE
+============================================================
+
+NODE A
+Environment : NORMAL_RIVER
+Audio       : NORMAL_ENVIRONMENT
+Vibration   : NORMAL_GROUND
+Turbidity   : 17.8 NTU
+Health      : HEALTHY
+
+NODE B
+Environment : DOWNSTREAM_DISTURBANCE
+Audio       : EXCAVATOR_LIKE
+Audio Prob. : 91%
+Vibration   : HEAVY_MACHINERY
+Vib Prob.   : 87%
+Turbidity   : 80.2 NTU
+Health      : HEALTHY
+
+------------------------------------------------------------
+
+DETECTION:
+SUSPECTED GALAMSEY ACTIVITY
+
+ML CLASS:
+HIGH_RISK_MINING_ACTIVITY
+
+RISK:
+CRITICAL
+
+CONFIDENCE:
+93%
+
+SUSPECTED AREA:
+BETWEEN NODE A AND NODE B
+
+RIVER SEGMENT:
+SEGMENT_A_B
+
+APPROXIMATE CENTER:
+5.6059, -0.1842
+
+WHY:
+- Strong downstream turbidity increase
+- Excavator-like machinery sound
+- Heavy machinery vibration
+- Multiple independent sensors agree
+- Activity persisted beyond threshold
+- Upstream Node A remained normal
+
+------------------------------------------------------------
+
+SECURITY ALERT:
+
+Eligibility:
+YES
+
+Dispatch:
+SENT
+
+Channels:
+SMS
+
+Authorized Recipients:
+3
+
+Alert Location Included:
+YES
+
+Map Data Created:
+YES
+
+------------------------------------------------------------
+
+ACTION:
+Authorized response teams should investigate the suspected
+river section between Node A and Node B.
+
+============================================================
+
+======================================================================
+80. DOCUMENTATION
+======================================================================
+
+README and docs must explain:
+
+GoldTrace architecture
+
+ML architecture
+
+audio deep learning
+
+vibration deep learning
+
+environmental ML
+
+anomaly detection
+
+sensor fusion
+
+risk engine
+
+confidence engine
+
+localization
+
+GPS/static node positions
+
+river segments
+
+GIS/GeoJSON
+
+suspected-area mapping
+
+agency alert architecture
+
+SIM7600 SMS
+
+agency recipient configuration
+
+alert retries
+
+offline alert queue
+
+alert acknowledgement
+
+demo vs production mode
+
+real data limitations
+
+Raspberry Pi deployment
+
+FastAPI
+
+frontend/map integration.
+
+======================================================================
+81. IMPLEMENTATION REQUIREMENTS
+======================================================================
+
+Build REAL WORKING CODE.
+
+Do not:
+
+- only create directories
+- create empty files
+- use TODOs instead of implementation
+- create pseudocode-only modules
+- fake model performance
+- fake SMS delivery
+- fake agency acknowledgement
+- claim exact location when only a segment is known
+- treat high turbidity alone as galamsey
+- dispatch alerts when SYSTEM_UNCERTAIN
+- expose secrets in source control.
+
+======================================================================
+82. FINAL VALIDATION
+======================================================================
+
+Before calling GoldTrace complete:
+
+1. Generate synthetic data.
+
+2. Train all models.
+
+3. Train audio PyTorch CNN.
+
+4. Train vibration PyTorch CNN.
+
+5. Export ONNX models.
+
+6. Validate PyTorch vs ONNX outputs.
+
+7. Train environmental model.
+
+8. Train anomaly detector.
+
+9. Train fusion model.
+
+10. Run evaluation.
+
+11. Run pytest.
+
+12. Verify heavy rainfall alone does not trigger agency alert.
+
+13. Verify ordinary vehicle activity does not trigger agency alert.
+
+14. Verify missing sensor produces uncertainty.
+
+15. Verify persistent combined mining-like evidence produces CRITICAL.
+
+16. Verify CRITICAL event is assigned a suspected river segment.
+
+17. Verify suspected segment has map coordinates.
+
+18. Verify GeoJSON is generated.
+
+19. Verify alert contains location.
+
+20. Verify SIM7600 mock dispatch works.
+
+21. Verify production SMS adapter exists.
+
+22. Verify failed delivery enters retry queue.
+
+23. Verify alert deduplication works.
+
+24. Verify escalation works.
+
+25. Verify delivery status is stored.
+
+26. Verify map APIs return nodes and risk zones.
+
+27. Verify model registry.
+
+28. Run edge benchmark.
+
+29. Verify Raspberry Pi compatibility.
+
+======================================================================
+83. FINAL RESPONSE AFTER BUILD
+======================================================================
+
+When implementation is complete provide:
+
+A. Final directory tree
+
+B. ML models created
+
+C. Framework for every model
+
+D. Training results
+
+E. Evaluation results
+
+F. Confusion matrices
+
+G. False-positive analysis
+
+H. ONNX files
+
+I. Edge benchmark
+
+J. Demo results
+
+K. Test results
+
+L. Localization examples
+
+M. GeoJSON event example
+
+N. Example map-ready output
+
+O. Example agency SMS
+
+P. Agency alert delivery test
+
+Q. SIM7600 configuration instructions
+
+R. Authorized recipient configuration
+
+S. Exact Raspberry Pi commands
+
+T. Exact steps for switching DEMO to PRODUCTION safely
+
+U. Current limitations
+
+V. Real-world data required
+
+W. How the React map/dashboard will consume event locations
+
+X. How ESP32/LoRa will connect to the complete engine
+
+======================================================================
+FINAL INSTRUCTION
+======================================================================
+
+Build the complete GoldTrace system end-to-end.
+
+GoldTrace must not only DETECT suspicious mining activity.
+
+It must:
+
+DETECT
+    ↓
+VERIFY USING MULTIPLE SENSORS
+    ↓
+ASSESS RISK
+    ↓
+LOCALIZE THE SUSPECTED RIVER AREA
+    ↓
+CREATE MAP/GEOJSON DATA
+    ↓
+DISPLAY THE AREA ON THE GOLDTRACE MAP
+    ↓
+GENERATE AN INCIDENT
+    ↓
+SEND THE ALERT AND LOCATION TO CONFIGURED AUTHORIZED
+SECURITY/ENVIRONMENTAL AGENCIES
+    ↓
+TRACK DELIVERY
+    ↓
+RETRY IF NETWORK IS TEMPORARILY UNAVAILABLE
+    ↓
+RECORD ACKNOWLEDGEMENT / RESPONSE STATUS
+
+Use PyTorch where deep learning is beneficial.
+
+Use scikit-learn where classical ML is more suitable.
+
+Use ONNX Runtime for efficient Raspberry Pi inference where practical.
+
+Use SIM7600 for GSM/4G alert transmission.
+
+The system must always distinguish:
+
+DETECTION
+
+from
+
+LEGAL CONFIRMATION.
+
+A CRITICAL GoldTrace result means:
+
+"Strong multi-sensor evidence of suspected mining/galamsey activity
+requiring urgent investigation."
+
+It does NOT mean:
+
+"Illegal mining has been legally confirmed."
+
+Start implementation now and continue until the entire ML,
+localization, mapping, agency-alerting, storage, API and Raspberry Pi
+system is operational and tested.

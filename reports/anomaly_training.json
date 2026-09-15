@@ -1,0 +1,12 @@
+{
+  "normal_samples": 19141,
+  "features": [
+    "turbidity_difference",
+    "turbidity_ratio",
+    "audio_machine_probability_b",
+    "vibration_machinery_probability_b",
+    "audio_rms_difference",
+    "vibration_rms_difference",
+    "persistence_seconds"
+  ]
+}

@@ -1,0 +1,12 @@
+numpy
+pandas
+scipy
+scikit-learn==1.8.0
+joblib
+PyYAML
+pydantic
+fastapi
+uvicorn
+onnxruntime
+pyserial
+httpx

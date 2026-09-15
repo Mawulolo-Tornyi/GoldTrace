@@ -1,0 +1,25 @@
+{
+  "best_model": "extra_trees",
+  "validation_macro_f1": 0.6145313289674968,
+  "candidates": {
+    "random_forest": 0.5876121836121836,
+    "extra_trees": 0.6145313289674968,
+    "hist_gb": 0.6032438666429271,
+    "gradient_boosting": 0.6062599099184465
+  },
+  "features": [
+    "turbidity_a",
+    "turbidity_b",
+    "turbidity_difference",
+    "turbidity_ratio",
+    "turbidity_percent_increase",
+    "temp_a",
+    "temp_b",
+    "temperature_difference",
+    "persistence_seconds"
+  ],
+  "dataset_rows": 100000,
+  "candidate_comparison_rows": 2000,
+  "production_training_pool_rows": 5000,
+  "split_by_event_id": true
+}

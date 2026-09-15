@@ -1,0 +1,26 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "segment_id": "SEGMENT_A_B",
+        "river_id": "RIVER_001",
+        "river_name": "Example River",
+        "from_node": "NODE_A",
+        "to_node": "NODE_B",
+        "district": "Example District",
+        "region": "Example Region"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-0.1870, 5.6037],
+          [-0.1856, 5.6050],
+          [-0.1837, 5.6062],
+          [-0.1814, 5.6081]
+        ]
+      }
+    }
+  ]
+}

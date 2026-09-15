@@ -1,0 +1,288 @@
+
+SCENARIO: NORMAL
+=============================================================
+                         GOLDTRACE
+=============================================================
+
+NODE_A
+Environment : NORMAL_RIVER
+Audio       : NORMAL_ENVIRONMENT
+Vibration   : UNKNOWN_VIBRATION
+Turbidity   : 18.60943415950886 NTU
+Health      : HEALTHY
+
+NODE_B
+Environment : NORMAL_RIVER
+Audio       : NORMAL_ENVIRONMENT
+Vibration   : UNKNOWN_VIBRATION
+Turbidity   : 17.52946594702787 NTU
+Health      : HEALTHY
+
+-------------------------------------------------------------
+DETECTION: Safe
+TURBIDITY CHANGE: -1.1 NTU
+ML CLASSIFICATION: SAFE
+RISK LEVEL: LOW
+CONFIDENCE: 73%
+SUSPECTED ZONE: NO_SUSPECTED_ZONE
+WHY:
+- Fusion model supports SAFE
+-------------------------------------------------------------
+SECURITY ALERT:
+Eligibility: NO
+Dispatch: NOT_ELIGIBLE
+Authorized Recipients: 0
+Alert Location Included: NO
+Map Data Created: NO
+-------------------------------------------------------------
+RECOMMENDATION: Continue monitoring and correlate with additional evidence.
+=============================================================
+
+SCENARIO: HEAVY_RAIN
+=============================================================
+                         GOLDTRACE
+=============================================================
+
+NODE_A
+Environment : UNKNOWN_ENVIRONMENTAL_CHANGE
+Audio       : NORMAL_ENVIRONMENT
+Vibration   : UNKNOWN_VIBRATION
+Turbidity   : 53.609434159508865 NTU
+Health      : HEALTHY
+
+NODE_B
+Environment : HEAVY_RAIN_EVENT
+Audio       : NORMAL_ENVIRONMENT
+Vibration   : UNKNOWN_VIBRATION
+Turbidity   : 72.52946594702787 NTU
+Health      : HEALTHY
+
+-------------------------------------------------------------
+DETECTION: Suspicious Environmental Change
+TURBIDITY CHANGE: +18.9 NTU
+ML CLASSIFICATION: SUSPICIOUS_ENVIRONMENTAL_CHANGE
+RISK LEVEL: MEDIUM
+CONFIDENCE: 75%
+SUSPECTED ZONE: UPSTREAM_OF_NODE_A_OR_WIDESPREAD_EVENT
+RIVER SEGMENT: None
+APPROXIMATE CENTER: 5.6037, -0.187
+WHY:
+- River turbidity is elevated without matching machinery signatures
+-------------------------------------------------------------
+SECURITY ALERT:
+Eligibility: NO
+Dispatch: NOT_ELIGIBLE
+Authorized Recipients: 0
+Alert Location Included: YES
+Map Data Created: YES
+-------------------------------------------------------------
+RECOMMENDATION: Continue monitoring and correlate with additional evidence.
+=============================================================
+
+SCENARIO: VEHICLE
+=============================================================
+                         GOLDTRACE
+=============================================================
+
+NODE_A
+Environment : NORMAL_RIVER
+Audio       : NORMAL_ENVIRONMENT
+Vibration   : UNKNOWN_VIBRATION
+Turbidity   : 18.60943415950886 NTU
+Health      : HEALTHY
+
+NODE_B
+Environment : NORMAL_RIVER
+Audio       : VEHICLE
+Vibration   : VEHICLE_PASSING
+Turbidity   : 17.52946594702787 NTU
+Health      : HEALTHY
+
+-------------------------------------------------------------
+DETECTION: Machinery Activity
+TURBIDITY CHANGE: -1.1 NTU
+ML CLASSIFICATION: MACHINERY_ACTIVITY
+RISK LEVEL: MEDIUM
+CONFIDENCE: 78%
+SUSPECTED ZONE: BETWEEN_NODE_A_AND_NODE_B
+RIVER SEGMENT: SEGMENT_A_B
+APPROXIMATE CENTER: 5.6057500000000005, -0.184425
+WHY:
+- Machinery signature detected
+- River disturbance evidence is limited
+-------------------------------------------------------------
+SECURITY ALERT:
+Eligibility: NO
+Dispatch: NOT_ELIGIBLE
+Authorized Recipients: 0
+Alert Location Included: YES
+Map Data Created: YES
+-------------------------------------------------------------
+RECOMMENDATION: Continue monitoring and correlate with additional evidence.
+=============================================================
+
+SCENARIO: WATER_PUMP
+=============================================================
+                         GOLDTRACE
+=============================================================
+
+NODE_A
+Environment : NORMAL_RIVER
+Audio       : NORMAL_ENVIRONMENT
+Vibration   : UNKNOWN_VIBRATION
+Turbidity   : 18.60943415950886 NTU
+Health      : HEALTHY
+
+NODE_B
+Environment : NORMAL_RIVER
+Audio       : GENERATOR
+Vibration   : WATER_PUMP_VIBRATION
+Turbidity   : 17.52946594702787 NTU
+Health      : HEALTHY
+
+-------------------------------------------------------------
+DETECTION: Machinery Activity
+TURBIDITY CHANGE: -1.1 NTU
+ML CLASSIFICATION: MACHINERY_ACTIVITY
+RISK LEVEL: MEDIUM
+CONFIDENCE: 84%
+SUSPECTED ZONE: BETWEEN_NODE_A_AND_NODE_B
+RIVER SEGMENT: SEGMENT_A_B
+APPROXIMATE CENTER: 5.6057500000000005, -0.184425
+WHY:
+- Machinery signature detected
+- River disturbance evidence is limited
+-------------------------------------------------------------
+SECURITY ALERT:
+Eligibility: NO
+Dispatch: NOT_ELIGIBLE
+Authorized Recipients: 0
+Alert Location Included: YES
+Map Data Created: YES
+-------------------------------------------------------------
+RECOMMENDATION: Continue monitoring and correlate with additional evidence.
+=============================================================
+
+SCENARIO: HIGH_RISK_MINING
+=============================================================
+                         GOLDTRACE
+=============================================================
+
+NODE_A
+Environment : NORMAL_RIVER
+Audio       : NORMAL_ENVIRONMENT
+Vibration   : UNKNOWN_VIBRATION
+Turbidity   : 18.60943415950886 NTU
+Health      : HEALTHY
+
+NODE_B
+Environment : RAINFALL_RUNOFF
+Audio       : GENERATOR
+Vibration   : CONSTRUCTION_ACTIVITY
+Turbidity   : 92.52946594702787 NTU
+Health      : HEALTHY
+
+-------------------------------------------------------------
+DETECTION: Suspected galamsey/mining activity requiring investigation
+TURBIDITY CHANGE: +73.9 NTU
+ML CLASSIFICATION: HIGH_RISK_MINING_ACTIVITY
+RISK LEVEL: CRITICAL
+CONFIDENCE: 93%
+SUSPECTED ZONE: BETWEEN_NODE_A_AND_NODE_B
+RIVER SEGMENT: SEGMENT_A_B
+APPROXIMATE CENTER: 5.6057500000000005, -0.184425
+WHY:
+- Strong downstream turbidity increase
+- Machine-like acoustic signature
+- Heavy machinery vibration
+- Abnormal conditions persisted
+- Multiple sensors agree
+-------------------------------------------------------------
+SECURITY ALERT:
+Eligibility: YES
+Dispatch: SIMULATED
+Authorized Recipients: 3
+Alert Location Included: YES
+Map Data Created: YES
+-------------------------------------------------------------
+RECOMMENDATION: Security/environmental authorities should investigate the monitored river section between Node A and Node B.
+=============================================================
+
+SCENARIO: SENSOR_FAILURE
+=============================================================
+                         GOLDTRACE
+=============================================================
+
+NODE_A
+Environment : UNKNOWN_ENVIRONMENTAL_CHANGE
+Audio       : UNKNOWN_AUDIO
+Vibration   : UNKNOWN_VIBRATION
+Turbidity   : 18.60943415950886 NTU
+Health      : HEALTHY
+
+NODE_B
+Environment : UNKNOWN_ENVIRONMENTAL_CHANGE
+Audio       : UNKNOWN_AUDIO
+Vibration   : UNKNOWN_VIBRATION
+Turbidity   : None NTU
+Health      : FAILED
+
+-------------------------------------------------------------
+DETECTION: Insufficient reliable sensor evidence
+TURBIDITY CHANGE: +0.0 NTU
+ML CLASSIFICATION: SYSTEM_UNCERTAIN
+RISK LEVEL: UNKNOWN
+CONFIDENCE: 20%
+SUSPECTED ZONE: NO_SUSPECTED_ZONE
+WHY:
+-------------------------------------------------------------
+SECURITY ALERT:
+Eligibility: NO
+Dispatch: NOT_ELIGIBLE
+Authorized Recipients: 0
+Alert Location Included: NO
+Map Data Created: NO
+-------------------------------------------------------------
+RECOMMENDATION: Check sensor health and communication before interpreting the event.
+=============================================================
+
+SCENARIO: MIXED_RAIN_AND_MACHINERY
+=============================================================
+                         GOLDTRACE
+=============================================================
+
+NODE_A
+Environment : UNKNOWN_ENVIRONMENTAL_CHANGE
+Audio       : NORMAL_ENVIRONMENT
+Vibration   : UNKNOWN_VIBRATION
+Turbidity   : 43.609434159508865 NTU
+Health      : HEALTHY
+
+NODE_B
+Environment : HEAVY_RAIN_EVENT
+Audio       : EXCAVATOR_LIKE
+Vibration   : CONSTRUCTION_ACTIVITY
+Turbidity   : 82.52946594702787 NTU
+Health      : DEGRADED
+
+-------------------------------------------------------------
+DETECTION: Machinery Activity
+TURBIDITY CHANGE: +38.9 NTU
+ML CLASSIFICATION: MACHINERY_ACTIVITY
+RISK LEVEL: MEDIUM
+CONFIDENCE: 83%
+SUSPECTED ZONE: UPSTREAM_OF_NODE_A_OR_WIDESPREAD_EVENT
+RIVER SEGMENT: None
+APPROXIMATE CENTER: 5.6037, -0.187
+WHY:
+- Fusion model supports MACHINERY_ACTIVITY
+-------------------------------------------------------------
+SECURITY ALERT:
+Eligibility: NO
+Dispatch: NOT_ELIGIBLE
+Authorized Recipients: 0
+Alert Location Included: YES
+Map Data Created: YES
+-------------------------------------------------------------
+RECOMMENDATION: Continue monitoring and correlate with additional evidence.
+=============================================================

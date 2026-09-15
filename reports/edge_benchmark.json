@@ -1,0 +1,14 @@
+{
+  "environment": "current machine (run again on Raspberry Pi 5 for real edge benchmark)",
+  "iterations": 20,
+  "average_ms": 274.63124270004755,
+  "p95_ms": 299.90300000008574,
+  "rss_mb": 267.1328125,
+  "model_files": {
+    "goldtrace_anomaly_v1.joblib": 749762,
+    "goldtrace_vibration_classical_v1.joblib": 1568585,
+    "goldtrace_environment_v1.joblib": 4837856,
+    "goldtrace_audio_classical_v1.joblib": 1744031,
+    "goldtrace_fusion_v1.joblib": 687110
+  }
+}

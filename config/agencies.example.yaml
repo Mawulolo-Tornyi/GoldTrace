@@ -1,0 +1,28 @@
+agencies:
+  - id: AGENCY_001
+    name: Authorized Security Response Team
+    type: SECURITY
+    enabled: true
+    channels:
+      sms: true
+      webhook: false
+      email: false
+    phone: "+233XXXXXXXXX"
+  - id: AGENCY_002
+    name: Authorized Environmental Response Team
+    type: ENVIRONMENTAL
+    enabled: true
+    channels:
+      sms: true
+      webhook: false
+      email: false
+    phone: "+233XXXXXXXXX"
+  - id: AGENCY_003
+    name: GoldTrace Monitoring Administrator
+    type: GOLDTRACE_ADMIN
+    enabled: true
+    channels:
+      sms: true
+      webhook: false
+      email: false
+    phone: "+233XXXXXXXXX"
