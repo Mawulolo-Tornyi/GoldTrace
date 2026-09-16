@@ -92,27 +92,73 @@ function nodeColor(
 
 function FitNodes({
   positions,
+  prediction,
+  segments,
 }: {
   positions: [
     number,
     number
   ][];
+  prediction: Prediction | null;
+  segments: MapLineLayer[];
 }) {
   const map = useMap();
 
   useEffect(() => {
+    const priorityRisk =
+      prediction?.risk === "HIGH" ||
+      prediction?.risk === "CRITICAL";
+
+    const targetSegment =
+      prediction?.river_segment
+        ?.trim()
+        .toUpperCase();
+
+    const matchingSegment =
+      priorityRisk &&
+      targetSegment
+        ? segments.find(
+            (segment) =>
+              (
+                segment.segment_id ||
+                segment.id
+              )
+                .trim()
+                .toUpperCase() ===
+              targetSegment
+          )
+        : undefined;
+
+    const focusPositions:
+      [number, number][] =
+        matchingSegment
+          ?.positions?.length
+          ? (
+              matchingSegment
+                .positions as [
+                  number,
+                  number
+                ][]
+            )
+          : positions;
+
     if (
-      positions.length === 0
+      focusPositions.length === 0
     ) {
       return;
     }
 
     if (
-      positions.length === 1
+      focusPositions.length === 1
     ) {
       map.setView(
-        positions[0],
-        16
+        focusPositions[0],
+        priorityRisk
+          ? 17
+          : 16,
+        {
+          animate: true,
+        }
       );
 
       return;
@@ -120,7 +166,7 @@ function FitNodes({
 
     const bounds =
       L.latLngBounds(
-        positions.map(
+        focusPositions.map(
           ([lat, lng]) =>
             L.latLng(
               lat,
@@ -132,13 +178,25 @@ function FitNodes({
     map.fitBounds(
       bounds,
       {
-        padding: [45, 45],
-        maxZoom: 16,
+        padding:
+          priorityRisk
+            ? [80, 80]
+            : [45, 45],
+
+        maxZoom:
+          priorityRisk
+            ? 17
+            : 16,
+
+        animate: true,
       }
     );
   }, [
     map,
     positions,
+    prediction?.risk,
+    prediction?.river_segment,
+    segments,
   ]);
 
   return null;
@@ -229,6 +287,8 @@ export function GoldTraceMap({
 
         <FitNodes
           positions={positions}
+          prediction={prediction}
+          segments={segments}
         />
 
         <GoldTraceGisLayers
