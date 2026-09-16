@@ -774,6 +774,22 @@ export default function Simulator() {
   const isBusy =
     busyScenario !== null;
 
+  const safetyGateState =
+    decision?.prediction ===
+      "SYSTEM_UNCERTAIN" ||
+    decision?.risk_level ===
+      "UNKNOWN"
+      ? "blocked"
+      : (
+          decision?.agency_alert
+            ?.dispatch_status ||
+          ""
+        )
+          .toUpperCase()
+          .includes("SIMULAT")
+      ? "simulated"
+      : "monitoring";
+
 
   return (
     <div className="simulator-page">
@@ -1166,6 +1182,56 @@ export default function Simulator() {
                   }
                 </strong>
               </article>
+            </div>
+
+
+            <div
+              className={
+                `simulator-safety-gate ${safetyGateState}`
+              }
+            >
+              <ShieldAlert
+                size={20}
+              />
+
+              <div>
+                <span>
+                  SAFETY GATE
+                </span>
+
+                <strong>
+                  {
+                    safetyGateState ===
+                    "blocked"
+                      ? "AUTOMATIC DISPATCH BLOCKED"
+                      : safetyGateState ===
+                        "simulated"
+                      ? "DEMO ALERT SIMULATED"
+                      : "AUTOMATIC DISPATCH NOT TRIGGERED"
+                  }
+                </strong>
+
+                <p>
+                  {
+                    safetyGateState ===
+                    "blocked"
+                      ? (
+                          "GoldTrace will not auto-dispatch when "
+                          + "sensor or communication evidence is uncertain."
+                        )
+                      : safetyGateState ===
+                        "simulated"
+                      ? (
+                          "Critical evidence satisfied the demo alert gate. "
+                          + "No real authority message was sent."
+                        )
+                      : (
+                          "Current evidence does not satisfy the automatic "
+                          + "authority-alert gate."
+                        )
+                  }
+                </p>
+              </div>
             </div>
 
 

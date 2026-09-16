@@ -4602,3 +4602,58 @@ html[data-presentation="true"] .mobile-nav {
   }
 }
 
+
+
+/* GoldTrace simulator safety gate */
+.simulator-safety-gate {
+  margin-top: 18px;
+  padding: 16px 18px;
+  border-radius: 14px;
+  border: 1px solid rgba(148, 163, 184, 0.22);
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.simulator-safety-gate > div {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.simulator-safety-gate span {
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  opacity: 0.72;
+}
+
+.simulator-safety-gate strong {
+  font-size: 14px;
+  line-height: 1.35;
+}
+
+.simulator-safety-gate p {
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.55;
+  opacity: 0.82;
+}
+
+.simulator-safety-gate.blocked {
+  color: #fca5a5;
+  background: rgba(127, 29, 29, 0.18);
+  border-color: rgba(248, 113, 113, 0.35);
+}
+
+.simulator-safety-gate.simulated {
+  color: #86efac;
+  background: rgba(20, 83, 45, 0.18);
+  border-color: rgba(74, 222, 128, 0.35);
+}
+
+.simulator-safety-gate.monitoring {
+  color: #fde68a;
+  background: rgba(113, 63, 18, 0.16);
+  border-color: rgba(250, 204, 21, 0.28);
+}
