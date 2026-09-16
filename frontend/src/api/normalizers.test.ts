@@ -481,7 +481,7 @@ describe(
 
         expect(
           system.raspberry_pi
-        ).toBe("CONNECTED");
+        ).toBe("NOT CONNECTED");
 
         expect(
           system.websocket
@@ -489,7 +489,11 @@ describe(
 
         expect(
           system.lora
-        ).toBe("CONNECTED");
+        ).toBe("NOT CONNECTED");
+
+        expect(
+          system.cellular
+        ).toBe("NOT CONNECTED");
 
         expect(
           system.ml_engine

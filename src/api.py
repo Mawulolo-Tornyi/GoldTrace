@@ -444,6 +444,87 @@ def _simulator_packet(
 # HEALTH / SYSTEM
 # ============================================================
 
+def _running_on_raspberry_pi() -> bool:
+    """
+    Detect whether the GoldTrace backend itself is running
+    on Raspberry Pi hardware.
+
+    A successful GoldTrace API process on Windows/Linux does
+    not imply that a Raspberry Pi is connected.
+    """
+    model_path = "/proc/device-tree/model"
+
+    try:
+        with open(
+            model_path,
+            "r",
+            encoding="utf-8",
+            errors="ignore",
+        ) as handle:
+            model = handle.read().lower()
+
+        return "raspberry pi" in model
+    except OSError:
+        return False
+
+
+def _hardware_env_status(
+    variable: str,
+) -> str:
+    """
+    Hardware peripherals must explicitly report/configure
+    connectivity. Simulator packets never count as proof of
+    physical hardware.
+    """
+    value = os.getenv(
+        variable,
+        "",
+    ).strip().lower()
+
+    if value in {
+        "1",
+        "true",
+        "yes",
+        "on",
+        "connected",
+    }:
+        return "CONNECTED"
+
+    return "NOT CONNECTED"
+
+
+def _hardware_status() -> dict[str, str]:
+    running_on_pi = (
+        _running_on_raspberry_pi()
+    )
+
+    return {
+        "runtime_host":
+            (
+                "RASPBERRY_PI"
+                if running_on_pi
+                else "DEVELOPMENT_HOST"
+            ),
+
+        "raspberry_pi":
+            (
+                "CONNECTED"
+                if running_on_pi
+                else "NOT CONNECTED"
+            ),
+
+        "lora":
+            _hardware_env_status(
+                "GOLDTRACE_LORA_CONNECTED"
+            ),
+
+        "cellular":
+            _hardware_env_status(
+                "GOLDTRACE_CELLULAR_CONNECTED"
+            ),
+    }
+
+
 @app.get("/health")
 def health():
     return {
@@ -474,6 +555,9 @@ def system_status():
             sorted(
                 latest_packets
             ),
+
+        "hardware":
+            _hardware_status(),
 
         "models":
             models.status(),

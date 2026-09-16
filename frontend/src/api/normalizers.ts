@@ -957,12 +957,10 @@ export function normalizeSystem(
       Boolean
     );
 
-  const nodesSeen =
-    Array.isArray(
-      raw.nodes_seen
-    )
-      ? raw.nodes_seen
-      : [];
+  const hardware =
+    objectOf(
+      raw.hardware
+    );
 
   const websocketClients =
     numberOr(
@@ -973,10 +971,9 @@ export function normalizeSystem(
   return {
     raspberry_pi:
       textFrom(
-        raw.system
-      ) === "GoldTrace"
-        ? "CONNECTED"
-        : "UNKNOWN",
+        hardware.raspberry_pi
+      ) ||
+      "NOT CONNECTED",
 
     api:
       "ONLINE",
@@ -987,12 +984,16 @@ export function normalizeSystem(
         : "AVAILABLE",
 
     lora:
-      nodesSeen.length > 0
-        ? "CONNECTED"
-        : "UNKNOWN",
+      textFrom(
+        hardware.lora
+      ) ||
+      "NOT CONNECTED",
 
     cellular:
-      "UNKNOWN",
+      textFrom(
+        hardware.cellular
+      ) ||
+      "NOT CONNECTED",
 
     ml_engine:
       modelsHealthy

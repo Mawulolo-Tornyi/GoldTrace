@@ -4657,3 +4657,117 @@ html[data-presentation="true"] .mobile-nav {
   background: rgba(113, 63, 18, 0.16);
   border-color: rgba(250, 204, 21, 0.28);
 }
+
+
+/* GoldTrace evidence trust gate */
+.evidence-trust-gate {
+  margin: 0 0 22px;
+  padding: 18px 20px;
+  border-radius: 16px;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 16px;
+  align-items: center;
+  border: 1px solid rgba(148, 163, 184, 0.22);
+}
+
+.evidence-trust-icon {
+  width: 46px;
+  height: 46px;
+  border-radius: 14px;
+  display: grid;
+  place-items: center;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.evidence-trust-copy {
+  min-width: 0;
+}
+
+.evidence-trust-copy span {
+  display: block;
+  margin-bottom: 4px;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.13em;
+  opacity: 0.72;
+}
+
+.evidence-trust-copy strong {
+  display: block;
+  font-size: 15px;
+  line-height: 1.35;
+}
+
+.evidence-trust-copy p {
+  max-width: 720px;
+  margin: 5px 0 0;
+  font-size: 12px;
+  line-height: 1.55;
+  opacity: 0.82;
+}
+
+.evidence-trust-metrics {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(70px, 1fr));
+  gap: 8px;
+}
+
+.evidence-trust-metrics div {
+  min-width: 74px;
+  padding: 9px 10px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.045);
+}
+
+.evidence-trust-metrics span {
+  display: block;
+  font-size: 8px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  opacity: 0.65;
+}
+
+.evidence-trust-metrics strong {
+  display: block;
+  margin-top: 3px;
+  font-size: 11px;
+}
+
+.evidence-trust-gate.ready {
+  color: #86efac;
+  background: rgba(20, 83, 45, 0.17);
+  border-color: rgba(74, 222, 128, 0.32);
+}
+
+.evidence-trust-gate.degraded {
+  color: #fde68a;
+  background: rgba(113, 63, 18, 0.16);
+  border-color: rgba(250, 204, 21, 0.3);
+}
+
+.evidence-trust-gate.blocked {
+  color: #fca5a5;
+  background: rgba(127, 29, 29, 0.18);
+  border-color: rgba(248, 113, 113, 0.34);
+}
+
+@media (max-width: 1050px) {
+  .evidence-trust-gate {
+    grid-template-columns: auto 1fr;
+  }
+
+  .evidence-trust-metrics {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 650px) {
+  .evidence-trust-gate {
+    grid-template-columns: 1fr;
+  }
+
+  .evidence-trust-metrics {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}

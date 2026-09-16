@@ -5,12 +5,29 @@ import {
   HardDrive,
   Radio,
   Server,
+  ShieldAlert,
+  ShieldCheck,
   Signal,
   Thermometer,
   Wifi,
 } from "lucide-react";
 
 import { useLiveStore } from "../store/liveStore";
+
+function isHealthyState(
+  value: string
+): boolean {
+  const normal =
+    value.toUpperCase();
+
+  return (
+    normal === "ONLINE" ||
+    normal === "HEALTHY" ||
+    normal === "CONNECTED" ||
+    normal === "DEMO"
+  );
+}
+
 
 function stateClass(
   value: string
@@ -29,6 +46,8 @@ function stateClass(
 
   if (
     normal === "OFFLINE" ||
+    normal === "NOT CONNECTED" ||
+    normal === "DISCONNECTED" ||
     normal === "FAILED" ||
     normal === "ERROR"
   ) {
@@ -113,6 +132,63 @@ export default function SystemHealth() {
         state.connected
     );
 
+  const onlineNodes =
+    nodes.filter(
+      (node) =>
+        node.status ===
+        "ONLINE"
+    ).length;
+
+  const staleNodes =
+    nodes.filter(
+      (node) =>
+        node.status ===
+        "STALE"
+    ).length;
+
+  const offlineNodes =
+    nodes.filter(
+      (node) =>
+        node.status ===
+        "OFFLINE"
+    ).length;
+
+  const coreServicesHealthy =
+    isHealthyState(
+      system.raspberry_pi
+    ) &&
+    isHealthyState(
+      system.ml_engine
+    ) &&
+    isHealthyState(
+      system.database
+    );
+
+  const fieldEvidenceHealthy =
+    nodes.length > 0 &&
+    onlineNodes ===
+      nodes.length &&
+    staleNodes === 0 &&
+    offlineNodes === 0;
+
+  const evidenceReady =
+    connected &&
+    coreServicesHealthy &&
+    fieldEvidenceHealthy;
+
+  const evidenceBlocked =
+    !connected ||
+    nodes.length === 0 ||
+    offlineNodes ===
+      nodes.length;
+
+  const trustState =
+    evidenceReady
+      ? "ready"
+      : evidenceBlocked
+      ? "blocked"
+      : "degraded";
+
   const services = [
     {
       label:
@@ -185,7 +261,7 @@ export default function SystemHealth() {
           </h2>
 
           <p>
-            Raspberry Pi resources,
+            Gateway resources,
             connectivity, database,
             communications and ML
             engine health.
@@ -202,6 +278,101 @@ export default function SystemHealth() {
           </strong>
         </div>
       </div>
+
+      <div
+        className={
+          `evidence-trust-gate ${trustState}`
+        }
+      >
+        <div className="evidence-trust-icon">
+          {
+            evidenceReady
+              ? (
+                  <ShieldCheck
+                    size={24}
+                  />
+                )
+              : (
+                  <ShieldAlert
+                    size={24}
+                  />
+                )
+          }
+        </div>
+
+        <div className="evidence-trust-copy">
+          <span>
+            EVIDENCE TRUST GATE
+          </span>
+
+          <strong>
+            {
+              trustState === "ready"
+                ? "READY FOR ESCALATION EVALUATION"
+                : trustState === "blocked"
+                ? "EVIDENCE TRUST NOT READY"
+                : "EVIDENCE TRUST DEGRADED"
+            }
+          </strong>
+
+          <p>
+            {
+              trustState === "ready"
+                ? (
+                    "Core services, live connection and all field nodes "
+                    + "are healthy. Incoming evidence can be evaluated "
+                    + "against GoldTrace escalation rules."
+                  )
+                : trustState === "blocked"
+                ? (
+                    "Critical field or communication availability is "
+                    + "missing. Sensor evidence should not be relied on "
+                    + "for automatic escalation."
+                  )
+                : (
+                    "One or more field-health conditions are degraded. "
+                    + "GoldTrace should verify sensor evidence before "
+                    + "escalation."
+                  )
+            }
+          </p>
+        </div>
+
+        <div className="evidence-trust-metrics">
+          <div>
+            <span>ONLINE</span>
+            <strong>
+              {onlineNodes}/{nodes.length}
+            </strong>
+          </div>
+
+          <div>
+            <span>STALE</span>
+            <strong>
+              {staleNodes}
+            </strong>
+          </div>
+
+          <div>
+            <span>OFFLINE</span>
+            <strong>
+              {offlineNodes}
+            </strong>
+          </div>
+
+          <div>
+            <span>LIVE LINK</span>
+            <strong>
+              {
+                connected
+                  ? "CONNECTED"
+                  : "OFFLINE"
+              }
+            </strong>
+          </div>
+        </div>
+      </div>
+
 
       <div className="service-health-grid">
         {services.map(
@@ -242,7 +413,7 @@ export default function SystemHealth() {
         <div className="section-title-row">
           <div>
             <span className="eyebrow">
-              RASPBERRY PI
+              GATEWAY / RUNTIME
             </span>
 
             <h2>
@@ -338,13 +509,7 @@ export default function SystemHealth() {
             </span>
 
             <strong className="system-good">
-              {
-                nodes.filter(
-                  (node) =>
-                    node.status ===
-                    "ONLINE"
-                ).length
-              }
+              {onlineNodes}
             </strong>
           </article>
 
@@ -354,13 +519,7 @@ export default function SystemHealth() {
             </span>
 
             <strong className="system-warning">
-              {
-                nodes.filter(
-                  (node) =>
-                    node.status ===
-                    "STALE"
-                ).length
-              }
+              {staleNodes}
             </strong>
           </article>
 
@@ -370,13 +529,7 @@ export default function SystemHealth() {
             </span>
 
             <strong className="system-bad">
-              {
-                nodes.filter(
-                  (node) =>
-                    node.status ===
-                    "OFFLINE"
-                ).length
-              }
+              {offlineNodes}
             </strong>
           </article>
         </div>
