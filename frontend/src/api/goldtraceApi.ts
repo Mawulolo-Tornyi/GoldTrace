@@ -104,3 +104,39 @@ export const mapApi = {
     ),
 };
 
+
+
+
+export const simulatorApi = {
+  scenarios: () =>
+    api.get(
+      "/simulator/scenarios",
+      {
+        timeout: 30000,
+      }
+    ),
+
+  reset: () =>
+    api.post(
+      "/simulator/reset",
+      {},
+      {
+        timeout: 30000,
+      }
+    ),
+
+  run: (
+    scenario: string,
+    seed = 42
+  ) =>
+    api.post(
+      "/simulator/run",
+      {
+        scenario,
+        seed,
+      },
+      {
+        timeout: 30000,
+      }
+    ),
+};

@@ -93,6 +93,14 @@ const SystemHealth =
       )
   );
 
+const Simulator =
+  lazy(
+    () =>
+      import(
+        "./pages/Simulator"
+      )
+  );
+
 const Settings =
   lazy(
     () =>
@@ -213,6 +221,15 @@ export default function App() {
             element={
               <PageLoader>
                 <SystemHealth />
+              </PageLoader>
+            }
+          />
+
+          <Route
+            path="/simulator"
+            element={
+              <PageLoader>
+                <Simulator />
               </PageLoader>
             }
           />

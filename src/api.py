@@ -22,6 +22,11 @@ from .baseline_manager import BaselineManager
 from .river_topology import RiverTopology
 from .geospatial import GeospatialEngine
 from .agency_registry import AgencyRegistry
+from .config import load_settings
+from .mock_sensor_stream import (
+    SCENARIOS,
+    scenario_packets,
+)
 
 
 app = FastAPI(
@@ -357,6 +362,82 @@ class AckRequest(BaseModel):
     acknowledged_by: str
 
     notes: str = ""
+
+
+class SimulatorRequest(BaseModel):
+    scenario: str
+
+    seed: int = 42
+
+
+SIMULATOR_ALIASES = {
+    "normal":
+        "normal",
+
+    "rain":
+        "heavy_rain",
+
+    "vehicle":
+        "vehicle",
+
+    "machinery":
+        "vehicle",
+
+    "rain-vehicle":
+        "mixed_rain_and_vehicle",
+
+    "rain-machinery":
+        "mixed_rain_and_machinery",
+
+    "mining":
+        "possible_mining",
+
+    "critical":
+        "high_risk_mining",
+
+    "excavator":
+        "excavator",
+
+    "sensor-failure":
+        "sensor_failure",
+
+    "communication-failure":
+        "communication_failure",
+}
+
+
+def _require_simulator_mode() -> None:
+    mode = str(
+        engine.agency_dispatcher.mode
+    ).upper()
+
+    if mode != "DEMO":
+        raise HTTPException(
+            403,
+            (
+                "GoldTrace simulator is available "
+                "only while agency dispatch mode "
+                "is DEMO."
+            ),
+        )
+
+
+def _simulator_packet(
+    packet: dict[str, Any],
+    scenario: str,
+) -> dict[str, Any]:
+    return {
+        **packet,
+
+        "source":
+            "SIMULATOR",
+
+        "simulated":
+            True,
+
+        "simulation_scenario":
+            scenario,
+    }
 
 
 # ============================================================
@@ -928,6 +1009,186 @@ async def sensor_data(
 
         "waiting_for_other_node":
             True,
+    }
+
+
+# ============================================================
+# DEMO / PRESENTATION SIMULATOR
+# ============================================================
+
+@app.get("/simulator/scenarios")
+def simulator_scenarios():
+    _require_simulator_mode()
+
+    settings = load_settings()
+
+    risk_cfg = settings.get(
+        "risk",
+        {},
+    )
+
+    agency_cfg = settings.get(
+        "agency_alerts",
+        {},
+    )
+
+    risk_wait = float(
+        risk_cfg.get(
+            "critical_persistence_seconds",
+            30,
+        )
+    )
+
+    agency_wait = float(
+        agency_cfg.get(
+            "minimum_persistence_seconds",
+            30,
+        )
+    )
+
+    return {
+        "mode":
+            "DEMO",
+
+        "source":
+            "SIMULATOR",
+
+        "aliases":
+            SIMULATOR_ALIASES,
+
+        "underlying_scenarios":
+            SCENARIOS,
+
+        "critical_wait_seconds":
+            max(
+                risk_wait,
+                agency_wait,
+            ) + 2.0,
+    }
+
+
+@app.post("/simulator/reset")
+def simulator_reset(
+    x_goldtrace_admin_key: str | None = Header(
+        default=None,
+        alias="X-GoldTrace-Admin-Key",
+    ),
+):
+    _require_admin(
+        x_goldtrace_admin_key
+    )
+
+    _require_simulator_mode()
+
+    engine.persistence.reset()
+
+    pending_pair_nodes.clear()
+
+    return {
+        "status":
+            "RESET",
+
+        "source":
+            "SIMULATOR",
+
+        "message":
+            (
+                "Simulator persistence state "
+                "has been reset."
+            ),
+    }
+
+
+@app.post("/simulator/run")
+async def simulator_run(
+    req: SimulatorRequest,
+
+    x_goldtrace_admin_key: str | None = Header(
+        default=None,
+        alias="X-GoldTrace-Admin-Key",
+    ),
+):
+    _require_admin(
+        x_goldtrace_admin_key
+    )
+
+    _require_simulator_mode()
+
+    alias = (
+        req.scenario
+        .strip()
+        .lower()
+    )
+
+    scenario = (
+        SIMULATOR_ALIASES.get(
+            alias
+        )
+    )
+
+    if not scenario:
+        raise HTTPException(
+            400,
+            (
+                "Unknown simulator scenario. "
+                f"Available: "
+                f"{', '.join(sorted(SIMULATOR_ALIASES))}"
+            ),
+        )
+
+    timestamp = datetime.now(
+        timezone.utc
+    )
+
+    node_a, node_b = (
+        scenario_packets(
+            scenario,
+            seed=req.seed,
+            timestamp=timestamp,
+        )
+    )
+
+    node_a = _simulator_packet(
+        node_a,
+        scenario,
+    )
+
+    node_b = _simulator_packet(
+        node_b,
+        scenario,
+    )
+
+    # The simulator must always submit a fresh
+    # A/B pair. It must never reuse a pending
+    # packet from an earlier simulation.
+    pending_pair_nodes.clear()
+
+    first_response = await sensor_data(
+        node_a
+    )
+
+    result = await sensor_data(
+        node_b
+    )
+
+    return {
+        "source":
+            "SIMULATOR",
+
+        "simulated":
+            True,
+
+        "alias":
+            alias,
+
+        "scenario":
+            scenario,
+
+        "node_a_response":
+            first_response,
+
+        "result":
+            result,
     }
 
 

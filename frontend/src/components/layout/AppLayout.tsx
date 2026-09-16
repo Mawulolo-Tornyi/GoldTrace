@@ -3,6 +3,7 @@ import {
   Bell,
   BrainCircuit,
   Gauge,
+  FlaskConical,
   LayoutDashboard,
   Map,
   Moon,
@@ -78,6 +79,12 @@ const navigation = [
     to: "/system",
     label: "System Health",
     icon: Gauge,
+  },
+
+  {
+    to: "/simulator",
+    label: "Simulator",
+    icon: FlaskConical,
   },
 
   {
