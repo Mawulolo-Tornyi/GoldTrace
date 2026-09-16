@@ -609,7 +609,7 @@ export default function Simulator() {
       setPhase(
         scenario.key ===
         "critical"
-          ? "Phase 1 — collecting strong evidence"
+          ? "Step 1/4 — collecting multi-sensor evidence"
           : `Running ${scenario.title}`
       );
 
@@ -669,7 +669,7 @@ export default function Simulator() {
         );
 
       setPhase(
-        "Phase 2 — persistence verification"
+        "Step 2/4 — verifying persistence"
       );
 
       for (
@@ -681,6 +681,13 @@ export default function Simulator() {
           remaining
         );
 
+        const elapsed =
+          wait - remaining + 1;
+
+        setPhase(
+          `Step 2/4 — verifying persistence (${elapsed}/${wait}s)`
+        );
+
         await sleep(
           1000
         );
@@ -689,7 +696,7 @@ export default function Simulator() {
       setCountdown(0);
 
       setPhase(
-        "Phase 2 — processing persistent evidence"
+        "Step 3/4 — persistent evidence detected; evaluating risk"
       );
 
       const secondResponse =
@@ -710,7 +717,7 @@ export default function Simulator() {
       setPhase(
         current.risk_level ===
         "CRITICAL"
-          ? "Persistence verified — CRITICAL"
+          ? "Step 4/4 — persistence verified; CRITICAL risk"
           : "Persistence evaluation complete"
       );
 
@@ -856,7 +863,7 @@ export default function Simulator() {
 
           <strong>
             {countdown > 0
-              ? `${countdown}s`
+              ? `${countdown}s remaining`
               : decision
                   ?.evidence
                   ?.persistent_activity
