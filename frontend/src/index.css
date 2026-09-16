@@ -4771,3 +4771,58 @@ html[data-presentation="true"] .mobile-nav {
     grid-template-columns: repeat(2, 1fr);
   }
 }
+
+
+/* GoldTrace simulation source banner */
+.simulation-source-banner {
+  margin: 0 0 18px;
+  padding: 13px 16px;
+  border: 1px solid rgba(250, 204, 21, 0.3);
+  border-radius: 13px;
+  background: rgba(113, 63, 18, 0.14);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+}
+
+.simulation-source-banner > div {
+  min-width: 0;
+}
+
+.simulation-source-banner strong {
+  display: block;
+  color: #fde68a;
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+}
+
+.simulation-source-banner span {
+  display: block;
+  margin-top: 3px;
+  font-size: 12px;
+  line-height: 1.4;
+  opacity: 0.84;
+}
+
+.simulation-source-banner small {
+  max-width: 430px;
+  text-align: right;
+  font-size: 10px;
+  line-height: 1.45;
+  opacity: 0.68;
+}
+
+@media (max-width: 720px) {
+  .simulation-source-banner {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 7px;
+  }
+
+  .simulation-source-banner small {
+    max-width: none;
+    text-align: left;
+  }
+}

@@ -53,6 +53,28 @@ export default function Dashboard() {
         alert.status === "ACTIVE"
     ).length;
 
+  const simulationActive =
+    nodes.some(
+      (node) =>
+        node.simulated === true ||
+        node.source
+          ?.trim()
+          .toUpperCase() ===
+          "SIMULATOR"
+    );
+
+  const liveFieldData =
+    connected &&
+    nodes.some(
+      (node) =>
+        node.status === "ONLINE" &&
+        node.simulated !== true &&
+        node.source
+          ?.trim()
+          .toUpperCase() !==
+          "SIMULATOR"
+    );
+
   return (
     <div className="dashboard">
       <section className="hero-status">
@@ -79,8 +101,12 @@ export default function Dashboard() {
           <span>
             {demoMode
               ? "DEMO DATA"
+              : simulationActive
+              ? "SIMULATION ACTIVE"
+              : liveFieldData
+              ? "REAL FIELD DATA"
               : connected
-              ? "LIVE SENSOR DATA"
+              ? "NO LIVE FIELD DATA"
               : "NO LIVE CONNECTION"}
           </span>
 
@@ -94,6 +120,26 @@ export default function Dashboard() {
           </small>
         </div>
       </section>
+
+      {simulationActive && !demoMode && (
+        <section className="simulation-source-banner">
+          <div>
+            <strong>
+              SIMULATION ACTIVE
+            </strong>
+
+            <span>
+              GoldTrace Simulator is supplying the
+              current sensor input.
+            </span>
+          </div>
+
+          <small>
+            Real ML/risk pipeline · Simulated telemetry ·
+            No physical field hardware implied
+          </small>
+        </section>
+      )}
 
       <section className="metrics-grid">
         <MetricCard

@@ -262,6 +262,84 @@ export function normalizeNode(
       existing?.last_seen
     );
 
+  /*
+   * A live sensor packet contains telemetry fields.
+   *
+   * Simulator packets explicitly contain:
+   *   source: "SIMULATOR"
+   *   simulated: true
+   *
+   * Physical/external packets that do not explicitly identify
+   * themselves are treated as FIELD telemetry when they contain
+   * fresh sensor measurements.
+   *
+   * Prediction-only node merges contain little more than node_id,
+   * so those merges preserve the existing source metadata.
+   */
+  const hasTelemetryPayload = [
+    "timestamp",
+    "last_seen",
+    "ts",
+    "turbidity",
+    "turbidity_ntu",
+    "ntu",
+    "temperature",
+    "temperature_c",
+    "temp_c",
+    "audio",
+    "audio_class",
+    "vibration",
+    "vibration_class",
+    "battery",
+    "battery_percent",
+    "battery_level",
+    "rssi",
+    "lora_rssi",
+  ].some(
+    (key) =>
+      Object.prototype.hasOwnProperty.call(
+        raw,
+        key
+      )
+  );
+
+  const explicitSource =
+    textFrom(
+      raw.source
+    );
+
+  const hasExplicitSimulationFlag =
+    Object.prototype.hasOwnProperty.call(
+      raw,
+      "simulated"
+    );
+
+  const simulatorSource =
+    explicitSource
+      .trim()
+      .toUpperCase() ===
+      "SIMULATOR";
+
+  const source =
+    explicitSource ||
+    (
+      hasTelemetryPayload
+        ? "FIELD"
+        : existing?.source || ""
+    );
+
+  const simulated =
+    (
+      explicitSource ||
+      hasExplicitSimulationFlag ||
+      hasTelemetryPayload
+    )
+      ? (
+          raw.simulated === true ||
+          simulatorSource
+        )
+      : existing?.simulated ?? false;
+
   return {
     ...(existing || {}),
 
@@ -445,6 +523,10 @@ export function normalizeNode(
 
     sensor_health:
       sensorHealth,
+
+    source,
+
+    simulated,
 
     last_seen:
       lastSeen,
