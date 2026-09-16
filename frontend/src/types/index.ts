@@ -1,0 +1,191 @@
+import type { Geometry } from "geojson";
+
+export type RiskLevel =
+  | "LOW"
+  | "MEDIUM"
+  | "HIGH"
+  | "CRITICAL"
+  | "UNKNOWN";
+
+export type NodeStatus =
+  | "ONLINE"
+  | "OFFLINE"
+  | "STALE";
+
+export type SensorHealthStatus =
+  | "HEALTHY"
+  | "DEGRADED"
+  | "FAILED"
+  | "UNKNOWN";
+
+export interface SensorHealth {
+  turbidity: SensorHealthStatus;
+  microphone: SensorHealthStatus;
+  geophone: SensorHealthStatus;
+  temperature: SensorHealthStatus;
+  lora: SensorHealthStatus;
+  power: SensorHealthStatus;
+}
+
+export interface SensorNode {
+  node_id: string;
+  name: string;
+
+  status: NodeStatus;
+
+  river_id: string;
+  river_name: string;
+
+  position_order: number;
+  position_type: string;
+
+  latitude: number;
+  longitude: number;
+
+  turbidity: number;
+  temperature: number;
+
+  environment: string;
+
+  audio_class: string;
+  audio_machine_probability: number;
+
+  vibration_class: string;
+  vibration_probability: number;
+  vibration_rms?: number;
+  vibration_peak?: number;
+  dominant_frequency?: number;
+
+  battery: number;
+  rssi: number;
+  snr?: number;
+
+  risk: RiskLevel;
+
+  sensor_health: SensorHealth;
+
+  last_seen: string;
+}
+
+export interface Prediction {
+  classification: string;
+  risk: RiskLevel;
+  confidence: number;
+
+  suspected_zone: string;
+  river_segment: string;
+
+  duration_seconds: number;
+  event_id: string;
+
+  human_description: string;
+  recommendation: string;
+
+  reasons: string[];
+}
+
+export interface GoldTraceEvent {
+  event_id: string;
+  timestamp: string;
+
+  prediction: string;
+  risk: RiskLevel;
+
+  confidence: number;
+
+  zone: string;
+  segment_id?: string;
+
+  duration_seconds: number;
+
+  status: "ACTIVE" | "RESOLVED" | "INVESTIGATING";
+}
+
+export interface Alert {
+  alert_id: string;
+  event_id: string;
+
+  severity: RiskLevel;
+
+  location: string;
+  timestamp: string;
+
+  message: string;
+
+  status:
+    | "ACTIVE"
+    | "ACKNOWLEDGED"
+    | "RESOLVED";
+
+  acknowledged_by?: string;
+  acknowledged_at?: string;
+  acknowledgement_note?: string;
+}
+
+export interface SystemStatus {
+  raspberry_pi: string;
+  api: string;
+  websocket: string;
+  lora: string;
+  cellular: string;
+  ml_engine: string;
+  database: string;
+
+  cpu: number;
+  ram: number;
+  storage: number;
+  temperature: number;
+
+  uptime: string;
+
+  nodes_online: number;
+  nodes_offline: number;
+
+  last_prediction?: string;
+}
+
+export interface ModelInfo {
+  id: string;
+  name: string;
+  version: string;
+  framework: string;
+  runtime: string;
+  status: string;
+  metric_name?: string;
+  metric_value?: number;
+  last_trained?: string;
+}
+
+export interface RiverSegment {
+  segment_id: string;
+  river_id: string;
+  river_name: string;
+
+  from_node: string;
+  to_node: string;
+
+  coordinates: [number, number][];
+}
+
+export interface RiskZone {
+  zone_id: string;
+  risk: RiskLevel;
+
+  confidence: number;
+
+  event_id?: string;
+
+  geometry: Geometry;
+}
+
+export interface LiveState {
+  nodes: SensorNode[];
+  prediction: Prediction | null;
+
+  events: GoldTraceEvent[];
+  alerts: Alert[];
+
+  system: SystemStatus;
+}
+
+

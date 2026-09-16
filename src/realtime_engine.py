@@ -7,6 +7,7 @@ from .synchronization import synchronize_packets
 from .feature_engineering import node_comparison_features
 from .confidence_engine import calculate_confidence
 from .risk_engine import assess_risk
+from .persistence_tracker import PersistenceTracker
 from .event_tracker import EventTracker
 from .localization import estimate_zone
 from .database import Database
@@ -24,6 +25,7 @@ class RealtimeEngine:
         self.alerts = AlertManager()
         self.geospatial = GeospatialEngine()
         self.agency_dispatcher = AgencyAlertDispatcher(self.db)
+        self.persistence = PersistenceTracker()
 
     @staticmethod
     def _utc() -> str:
@@ -52,11 +54,26 @@ class RealtimeEngine:
         self.db.save_prediction(result)
         return result
 
-    def process_pair(self, a: dict[str, Any], b: dict[str, Any], persistence_seconds: float = 0.0) -> dict:
+    def process_pair(self, a: dict[str, Any], b: dict[str, Any], persistence_seconds: float | None = None) -> dict:
         self.db.save_sensor_reading(a); self.db.save_sensor_reading(b)
         va = validate_packet(a); vb = validate_packet(b); sync = synchronize_packets(a, b)
         if not sync['synchronized'] or va['health'] == 'FAILED' or vb['health'] == 'FAILED':
+            self.persistence.reset()
+
             return self._uncertain(a, b, va, vb, sync)
+
+        auto_persistence = (
+            persistence_seconds is None
+        )
+
+        effective_persistence = (
+            0.0
+            if auto_persistence
+            else max(
+                0.0,
+                float(persistence_seconds),
+            )
+        )
 
         audio_a = self.models.audio.predict(a['audio_samples'], a['audio_sample_rate'])
         audio_b = self.models.audio.predict(b['audio_samples'], b['audio_sample_rate'])
@@ -70,7 +87,7 @@ class RealtimeEngine:
             'turbidity_a':a['turbidity_ntu'], 'turbidity_b':b['turbidity_ntu'],
             'audio_machine_probability_a':audio_a['machine_probability'], 'audio_machine_probability_b':audio_b['machine_probability'],
             'vibration_machinery_probability_a':vib_a['machinery_probability'], 'vibration_machinery_probability_b':vib_b['machinery_probability'],
-            'persistence_seconds':float(persistence_seconds),
+            'persistence_seconds':effective_persistence,
         })
 
         env = self.models.environment.predict(comp)
@@ -78,7 +95,104 @@ class RealtimeEngine:
         fusion = self.models.fusion.predict(comp)
         turbidity_strength = min(1.0, abs(float(comp.get('turbidity_difference',0))) / 50.0)
         confidence = calculate_confidence(fusion['confidence'], audio_b['confidence'], vib_b['confidence'], env['confidence'], [va['health'], vb['health']], sync['quality'], anomaly.get('anomaly_score',0), 1.0, [audio_b['machine_probability'], vib_b['machinery_probability'], turbidity_strength])
-        risk = assess_risk(fusion['class'], confidence, comp, [va['health'], vb['health']])
+
+        risk = assess_risk(
+            fusion['class'],
+            confidence,
+            comp,
+            [va['health'], vb['health']],
+        )
+
+        if auto_persistence:
+            critical_candidate = bool(
+                risk.get(
+                    'critical_candidate',
+                    False,
+                )
+            )
+
+            effective_persistence = (
+                self.persistence.update(
+                    critical_candidate
+                )
+            )
+
+            if effective_persistence > 0.0:
+                comp[
+                    'persistence_seconds'
+                ] = effective_persistence
+
+                env = (
+                    self.models.environment.predict(
+                        comp
+                    )
+                )
+
+                anomaly = (
+                    self.models.anomaly.predict(
+                        comp
+                    )
+                )
+
+                comp.update(
+                    anomaly
+                )
+
+                fusion = (
+                    self.models.fusion.predict(
+                        comp
+                    )
+                )
+
+                turbidity_strength = min(
+                    1.0,
+                    abs(
+                        float(
+                            comp.get(
+                                'turbidity_difference',
+                                0,
+                            )
+                        )
+                    ) / 50.0,
+                )
+
+                confidence = calculate_confidence(
+                    fusion['confidence'],
+                    audio_b['confidence'],
+                    vib_b['confidence'],
+                    env['confidence'],
+                    [
+                        va['health'],
+                        vb['health'],
+                    ],
+                    sync['quality'],
+                    anomaly.get(
+                        'anomaly_score',
+                        0,
+                    ),
+                    1.0,
+                    [
+                        audio_b[
+                            'machine_probability'
+                        ],
+                        vib_b[
+                            'machinery_probability'
+                        ],
+                        turbidity_strength,
+                    ],
+                )
+
+                risk = assess_risk(
+                    fusion['class'],
+                    confidence,
+                    comp,
+                    [
+                        va['health'],
+                        vb['health'],
+                    ],
+                )
+        else:
+            self.persistence.reset()
 
         a_abnormal = a['turbidity_ntu'] > 40 or audio_a['machine_probability'] > .65 or vib_a['machinery_probability'] > .65
         b_abnormal = b['turbidity_ntu'] > 40 or audio_b['machine_probability'] > .65 or vib_b['machinery_probability'] > .65
@@ -90,8 +204,9 @@ class RealtimeEngine:
             'turbidity_difference': comp['turbidity_difference'],
             'audio_machine_probability': audio_b['machine_probability'],
             'vibration_machinery_probability': vib_b['machinery_probability'],
-            'persistent_activity': persistence_seconds >= 20,
-            'persistence_seconds': float(persistence_seconds),
+            'persistent_activity': bool(risk.get('persistence_met', False)),
+            'persistence_seconds': float(effective_persistence),
+            'required_persistence_seconds': float(risk.get('required_persistence_seconds', 0.0)),
             'multi_sensor_confirmation': comp['multi_sensor_confirmation_score'] >= .66,
             'multi_sensor_confirmation_score': comp['multi_sensor_confirmation_score'],
             'anomaly_score': anomaly.get('anomaly_score',0),
@@ -133,3 +248,4 @@ class RealtimeEngine:
         result['agency_alert'] = self.agency_dispatcher.dispatch(result)
         self.db.save_prediction(result)
         return result
+

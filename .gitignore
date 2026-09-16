@@ -22,3 +22,10 @@ logs/
 Thumbs.db
 
 data/synthetic/*.csv
+*.bak
+frontend/.env
+frontend/dist/
+frontend/node_modules/
+*.sqlite
+*.sqlite3
+*.db
