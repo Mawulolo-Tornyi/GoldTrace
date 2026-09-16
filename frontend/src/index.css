@@ -4043,7 +4043,7 @@ html[data-presentation="true"] .mobile-nav {
   line-height: 1.5;
 }
 
-.simulator-warning {
+.simulator-error-banner {
   margin-top: 13px;
 
   padding: 12px 14px;
@@ -4066,18 +4066,18 @@ html[data-presentation="true"] .mobile-nav {
   border-radius: 10px;
 }
 
-.simulator-warning div {
+.simulator-error-banner div {
   display: flex;
   flex-direction: column;
 
   gap: 3px;
 }
 
-.simulator-warning strong {
+.simulator-error-banner strong {
   font-size: 10px;
 }
 
-.simulator-warning span {
+.simulator-error-banner span {
   color:
     #c89b9b;
 
@@ -4601,3 +4601,4 @@ html[data-presentation="true"] .mobile-nav {
       1fr;
   }
 }
+

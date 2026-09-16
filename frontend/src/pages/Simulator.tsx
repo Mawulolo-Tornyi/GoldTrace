@@ -812,7 +812,7 @@ export default function Simulator() {
 
 
       {loadError && (
-        <div className="simulator-warning">
+        <div className="simulator-error-banner">
           <ShieldAlert
             size={18}
           />
@@ -1201,3 +1201,4 @@ export default function Simulator() {
     </div>
   );
 }
+
