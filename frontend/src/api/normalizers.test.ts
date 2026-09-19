@@ -265,6 +265,132 @@ describe(
 
 
     it(
+      "marks simulator telemetry as simulated",
+      () => {
+        const node =
+          normalizeNode({
+            node_id:
+              "NODE_A",
+
+            status:
+              "ONLINE",
+
+            timestamp:
+              new Date().toISOString(),
+
+            turbidity:
+              42.5,
+
+            source:
+              "SIMULATOR",
+
+            simulated:
+              true,
+          });
+
+        expect(
+          node.source
+        ).toBe(
+          "SIMULATOR"
+        );
+
+        expect(
+          node.simulated
+        ).toBe(true);
+      }
+    );
+
+
+    it(
+      "marks ordinary telemetry as field data",
+      () => {
+        const node =
+          normalizeNode({
+            node_id:
+              "NODE_A",
+
+            status:
+              "ONLINE",
+
+            timestamp:
+              new Date().toISOString(),
+
+            turbidity:
+              18.4,
+          });
+
+        expect(
+          node.source
+        ).toBe(
+          "FIELD"
+        );
+
+        expect(
+          node.simulated
+        ).toBe(false);
+      }
+    );
+
+
+    it(
+      "preserves telemetry source during prediction-only node merges",
+      () => {
+        const existing =
+          normalizeNode({
+            node_id:
+              "NODE_B",
+
+            status:
+              "ONLINE",
+
+            timestamp:
+              new Date().toISOString(),
+
+            turbidity:
+              87.3,
+
+            source:
+              "SIMULATOR",
+
+            simulated:
+              true,
+          });
+
+        const merged =
+          normalizeNode(
+            {
+              node_id:
+                "NODE_B",
+            },
+            existing,
+            "HIGH",
+            {
+              audio:
+                "MACHINERY",
+
+              vibration:
+                "HEAVY_MACHINERY",
+            }
+          );
+
+        expect(
+          merged.source
+        ).toBe(
+          "SIMULATOR"
+        );
+
+        expect(
+          merged.simulated
+        ).toBe(true);
+
+        expect(
+          merged.risk
+        ).toBe("HIGH");
+      }
+    );
+
+
+    it(
       "does not fabricate missing environmental telemetry",
       () => {
         const node =
