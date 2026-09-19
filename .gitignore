@@ -29,3 +29,9 @@ frontend/node_modules/
 *.sqlite
 *.sqlite3
 *.db
+hardware/esp32_node/include/secrets.h
+hardware/pi_gateway/.env
+hardware/esp32_node/.pio/
+hardware/pi_gateway/__pycache__/
+hardware/pi_gateway/.pytest_cache/
+hardware/arduino/GoldTrace_Node/secrets.h

@@ -1,0 +1,96 @@
+GOLDTRACE - ARDUINO IDE REQUIREMENTS
+====================================
+
+BOARD PACKAGE
+-------------
+
+Install through Arduino IDE Boards Manager:
+
+    esp32 by Espressif Systems
+
+
+TARGET BOARD
+------------
+
+    ESP32-S3 Dev Module
+
+The exact board option may later be changed to match
+the physical ESP32-S3 DevKitC-1.
+
+
+REQUIRED LIBRARIES
+------------------
+
+Install through Arduino IDE Library Manager:
+
+1. RadioLib
+   Author: Jan Gromes
+
+2. Adafruit ADS1X15
+   Author: Adafruit
+
+3. Adafruit BusIO
+   Author: Adafruit
+
+4. OneWire
+   Author: Paul Stoffregen
+
+5. DallasTemperature
+   Author: Miles Burton
+
+6. TinyGPSPlus
+   Author: Mikal Hart
+
+7. ArduinoJson
+   Author: Benoit Blanchon
+
+
+BUILT INTO ESP32 CORE
+---------------------
+
+These do NOT require separate Arduino libraries:
+
+- Arduino.h
+- SPI.h
+- Wire.h
+- HardwareSerial
+- esp_system.h
+- driver/i2s.h
+- mbedTLS SHA-256 / HMAC
+
+
+SERIAL MONITOR
+--------------
+
+Baud rate:
+
+    115200
+
+
+NODE SELECTION
+--------------
+
+Open:
+
+    node_identity.h
+
+For upstream NODE_A:
+
+    #define GOLDTRACE_NODE_NUMBER 1
+
+For downstream NODE_B:
+
+    #define GOLDTRACE_NODE_NUMBER 2
+
+
+IMPORTANT
+---------
+
+Do not use secrets.example.h as the production secret.
+
+The actual file used by the firmware is:
+
+    secrets.h
+
+Both ESP32 nodes and the Raspberry Pi gateway must
+eventually use the same LORA_SHARED_KEY.
